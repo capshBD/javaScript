@@ -10,6 +10,11 @@
 
   </head>
   
+  <!-- 装饰器模式
+      原始对象构造函数 和所有装饰器构造函数拥有同名的本地方法或原型方法
+      原始对象被不断桥接到 装饰器对象中   装饰器对象调用方法即是调用被装饰的桥接的对象的同名方法
+   -->
+  
   <body>
   	<div id="dd"></div>
   <script type="text/javascript">
@@ -36,8 +41,8 @@
 	  	//自行车装饰器
   		var BicycleDecorator=function(bicycle){
   			Interface.ensureImplements(bicycle,Bicycle);
-  			this.bicycle=bicycle;
-  			this.interface=Bicycle;
+  			this.bicycle=bicycle;//把需要装饰的原始对象桥接到装饰器对象上来
+  			this.interface=Bicycle;//把判断接口类对象桥接到装饰器对象上来
   			outerloop:for(var key in this.bicycle){
   				if(typeof this.bicycle[key]!=='function')
   					continue outerloop;
@@ -45,8 +50,11 @@
   					if(key===this.interface.methods[i])
   					 continue outerloop;
   				var that=this;
+  				//为装饰期构造函数添加一个和原始对象的构造函数一样名称的方法
   				(function(methodName){
   					that[methodName]=function(){
+  						//执行装饰器对象的方法即是执行和原始对象同名的方法,达到装饰的目的
+  						//执行的是装饰器构造函数定义的prototype里面的方法
   						return that.bicycle[methodName]();
   					}
   				})(key);
@@ -102,7 +110,7 @@
   		acmeFtCru=new TaillightDecorator(acmeFtCru);
   		console.info(acmeFtCru.getPrice());
   		
-  		//维护自行车保修期装饰器
+  		//维护自行车保修期装饰器,可以扩展装饰器构造函数的属性
   		var TimedWarrantyDecorator=function(bicycle,coverageLengthInYears){
   			TimedWarrantyDecorator.superclass.constructor.call(this,bicycle);
   			this.coverageLength=coverageLengthInYears;
@@ -203,7 +211,10 @@
   		console.info(myBicycle.ringBell());
   		console.info(myBicycle.repair());
   		
-  		/**********/
+  		/*
+  		为某个父标签添加一个ol元素
+  		*/
+  		
   		var ListBuilder=function(parent,length){
   			this.element=$(parent);
   			this.length=length;
