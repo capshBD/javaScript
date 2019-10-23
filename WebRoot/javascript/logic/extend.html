@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>extend.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+    <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+	<script type="text/javascript">
+		//动物构造函数
+		function Animal(name,age){
+			this.name=name;
+			this.age=age;
+			this.shut=function(){
+				console.info("我的岁数"+this.age);	
+			}
+		}
+		
+		Animal.prototype.eat=function(){
+			console.info(this.name+"吃饭了");
+		}
+		
+		//狗构造函数
+		function Dog(color,name,age){
+			Animal.call(this,name,age);//构造函数继承
+			this.color=color;
+			this.play=function(){
+				console.info("我的颜色"+this.color);	
+			}
+		}
+		
+	/* 	Dog.prototype=new Animal("狗",22); *///一定要在设置Dog.prototype.属性前指定，这种方式不灵活
+		
+		Dog.prototype=new Animal();
+		Dog.prototype.sleep=function(){
+			console.info(this.color+"狗睡觉了");
+		}
+		
+		//二货的构造函数
+		function ErHa(food,color,name,age){
+			Dog.call(this,color,name,age);
+			this.food=food;
+		}
+		
+		 ErHa.prototype=new Dog();
+		ErHa.prototype.happy=function(){
+			console.info(this.name+","+this.age+","+this.color+","+this.food);
+		}
+		
+		var erHa=new ErHa("蛋糕","red","二哈",15);
+		console.info(erHa.name);
+		erHa.eat();//erHa没有eat方法，找ErHa的prototype属性（Dog的一个实例）的方法，没找到，找Dog.prototype（Animal）的一个实例的方法
+				  //没找到，找Animal.prototype的方法
+		erHa.happy();
+		erHa.shut();
+		
+		console.dir(erHa);
+		console.dir(ErHa);
+		
+		//拷贝继承
+		var obj={};
+		
+		for (var i in erHa)
+		obj[i]=erHa[i];
+		
+		console.info("copy的"+obj.name);
+		obj.eat();
+		obj.happy();
+		obj.shut();
+		console.dir(obj);
+		
+		
+		var object={
+			name:"fangzhouzi",
+			age:10,
+			sex:true,
+			hobbys:['play','swim','sing','eat']
+		};
+		var object2={};
+	//深拷贝	
+	function copy(obj1,obj2){
+		for(var key in obj1){
+			var o=obj1[key];
+			if(o instanceof Array){
+				var ooo=[];
+				copy(o,ooo);
+				obj2[key]=ooo;
+			}else if(o instanceof Object){
+				var oo={};
+				copy(o,oo);
+				obj2[key]=oo;
+			}else{
+				obj2[key]=o;
+			}
+			//obj2[key]=obj1[key];浅拷贝
+		  }
+	}
+	copy(object,object2);
+	
+	object.name="国际网";
+	object.hobbys.push("sleep");
+	console.info(object);
+	console.info(object2);
+	
+	window.onload=function(){
+		
+		function getNodeName(node,fn){
+			fn(node.nodeName);
+			if(node.children)
+				for(var i=0;i<node.children.length;i++)
+					getNodeName(node.children[i],fn);
+		}
+		
+		getNodeName(document.documentElement,function(nodeName){
+			console.info(nodeName);
+		})
+	}
+	</script>
+  </head>
+  
+  <body>
+  	<h1>标题1</h1>
+  	<h2>标题2</h2>
+  	<div>
+  		<table>
+  			<thead>
+  				<tr>
+  					<th>id</th>
+  					<th>name</th>
+  					<th>age</th>
+  				</tr>	
+  			</thead>
+  			<tbody>
+  				<tr>
+  					<td>1</td>
+  					<td>xiao</td>
+  					<td>11</td>
+  				</tr>
+  				<tr>
+  					<td>11</td>
+  					<td>dao</td>
+  					<td>32</td>
+  				</tr>
+  			</tbody>
+  		</table>
+  	</div>
+  	<ul>
+  		<li>li1</li>
+  		<li>li2</li>
+  		<li>li3</li>
+  	</ul>
+  </body>
+</html>

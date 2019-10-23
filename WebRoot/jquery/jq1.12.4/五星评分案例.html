@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>五星评分案例.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+    <script type="text/javascript" src="../common/js/jquery-1.12.4.js"></script>
+    
+   <script type="text/javascript">
+   	$(function(){
+   		//1. 给li注册鼠标经过事件，让自己和前面所有的兄弟都变成实心
+      var wjx_k = "☆";
+      var wjx_s = "★";
+      
+    /*   $('.comment>li').on("mouseenter",function(){
+      //调用end方法把链式对象恢复成前一次的对象
+      	$(this).text(wjx_s).prevAll().text(wjx_s).end().nextAll().text(wjx_k);
+      	//$(this).nextAll().text(wjx_k);
+      })
+      $('.comment').on("mouseleave",function(){
+      	$(this).children().text(wjx_k);
+      	$('li.current').text(wjx_s).prevAll().text(wjx_s);
+      })
+      $('.comment>li').on("click",function(){
+      	$(this).addClass("current").siblings().removeClass("current");
+      }) */
+      
+      $('.comment>li').on('mouseenter',function(){
+				$(this).text('★').prevAll().text('★').end().nextAll().text('☆');
+			
+			});
+			
+			$('.comment>li').on('click',function(){
+				$(this).addClass('current').siblings().removeClass('current');			
+			});
+			
+			$('.comment').on('mouseleave',function(){
+				$(this).find('li').text('☆');
+				$(this).find('li.current').text('★').prevAll().text('★')
+		
+				if($(this).find('li.current').size()>0){
+					$(this).find('li').off();
+				}
+				 
+			});
+   	})
+   
+   </script>
+	<style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+    
+    .comment {
+      font-size: 40px;
+      color: #ff16cf;
+    }
+    
+    .comment li {
+      float: left;
+    }
+    
+    ul {
+      list-style: none;
+    }
+  </style>
+  </head>
+  
+  <body>
+  
+<ul class="comment">
+  <li>☆</li>
+  <li>☆</li>
+  <li>☆</li>
+  <li>☆</li>
+  <li>☆</li>
+</ul>
+
+</body>
+</html>

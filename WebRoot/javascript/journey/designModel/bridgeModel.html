@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>bridgeModel.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<script type="text/javascript" src="public.js"></script>
+	<style type="text/css" media="screen">
+		body {font: 100% georgia,times,serif;}
+		h1,h2{font-weight: normal}
+		#queue-items{height: 1.5em}
+		#add-stuff{
+			padding: .5em;
+			background: #ddd;
+			border: 1px solid #bbb;
+		}
+		#result-area{padding:.5em; border: 1px solid #bbb;}
+	</style>
+	
+	<script type="text/javascript">
+  		window.DED=window.DED||{};
+  		DED.util=DED.util||{};
+  		DED.util.Observer=function(){
+  			this.fns=[];
+  		};
+  		DED.util.Observer.prototype={
+  			constructor:DED.util.Observer,
+  			subscribe:function(fn){
+  				this.fns.push(fn);
+  			},
+  			unsubscribe:function(fn){
+  				this.fns=this.fns.filter(function(el){
+  					if(el !== fn)
+  						return el;
+  				});
+  			},
+  			fire:function(o){
+  				this.fns.forEach(function(el){
+  					el(o);
+  				});
+  			}
+  		};
+  		
+  		DED.Queue=function(){
+  			this.queue=[];
+  			this.onComplete=new DED.util.Observer();
+  			this.onFailure=new DED.util.Observer();
+  			this.onFlush=new DED.util.Observer();
+  			
+  			//
+  			this.retryCount=3;
+  			this.currentRetry=0;
+  			this.paused=false;
+  			this.timeout=5000;
+  			this.conn={};
+  			this.timer={};
+  		};
+  		DED.Queue.method('flush',function(){
+  			if(!this.queue.length>0)
+  				return;
+  			if(this.paused){
+  				this.paused=false;
+  				return;
+  			}
+  			var that=this;
+  			this.currentRetry++;
+  			
+  			if(that.currentRetry==that.retryCount){
+  				that.onFailure.fire();
+  				that.currentRetry=0;
+  				that.queue.shift();
+  				that.flush();
+  			}else{
+  				var callback=function(o){
+  				console.info(o.status);
+  				if(o.status==200||o.status==304){
+  					that.currentRetry=0;
+	  				that.queue.shift();
+	  				that.onFlush.fire(o.responseText);
+	  				that.flush();
+  				}else{
+  					that.flush();
+  					return;
+  				}
+  				
+  				if(that.queue.length==0){
+  					that.onComplete.fire();
+  					return;
+  				}
+  			
+  			};
+  			this.conn=asyncRequest(
+  				this.queue[0]['method'],
+  				this.queue[0]['uri'],
+  				callback,
+  				this.queue[0]['params']
+  				);
+  			}
+  			
+  		})
+  		.method('setRetryCount',function(count){
+  			this.retryCount=count;
+  		})
+  		.method('setTimeOut',function(time){
+  			this.timeout=time;
+  		})
+  		.method('add',function(o){
+  			this.queue.push(o);
+  		})
+  		.method('pause',function(){
+  			this.paused=true;
+  		})
+  		.method('dequeue',function(){
+  			this.queue.pop();
+  		})
+  		.method('clear',function(o){
+  			this.queue=[];
+  		});
+  		
+  		window.onload=function(){
+  			var q=new DED.Queue();
+  			q.setRetryCount(3);
+  			q.setTimeOut(3000);
+			var items=$('items'),results=$('results'),queue=$('queue-items');
+			var requests=[];
+			q.onFlush.subscribe(function(data){
+				results.innerHTML=data;
+				requests.shift();
+				queue.innerHTML=requests.toString();
+			});
+			q.onFailure.subscribe(function(){
+				requests.shift();
+				queue.innerHTML=requests.toString();
+				results.innerHTML=' <span style="color:red;">连接失败</span>'
+			});
+			q.onComplete.subscribe(function(){
+				results.innerHTML+=' <span style="color:red;">连接成功</span>'
+			});
+			
+			var actionDispatcher=function(element){
+				switch(element){
+					case 'flush':
+					q.flush();
+					break;
+					case 'dequeue':
+					q.dequeue();
+					requests.pop();
+					queue.innerHTML=requests.toString();
+					break;
+					case 'pause':
+					q.pause();
+					break;
+					case 'clear':
+					q.clear();
+					requests=[];
+					queue.innerHTML='';
+					break;
+				}
+			};
+			
+			var addRequset=function(requset){
+				var data=requset.split('-')[1];
+				var para=null;
+				if(data=='01')
+				para='admin';
+				else if(data=='02')
+				para='guest';
+				else
+				para='vipcust';
+					
+				q.add({
+					method:'GET',
+					uri:'/JavaScript/Ajax/sample.jsp?username='+para,
+					params:null
+				});
+				requests.push(data);
+				queue.innerHTML=requests.toString();
+			};
+			
+			items.onclick=function(e){
+				var e=e||window.event;
+				var src=e.target||e.srcElement;
+				
+				try{
+					e.preventDefault();
+				}catch(ex){
+					e.returnValue=false;
+				}
+				console.info("items"+src.id);
+				actionDispatcher(src.id);
+			}
+			
+			var adders=$('adders');
+			adders.onclick=function(e){
+				var e=e||window.event;
+					var src=e.target||e.srcElement;
+					try{
+						e.preventDefault();
+					}catch(ex){
+						e.returnValue=false;
+					}
+					console.info("adders"+src.id);
+					addRequset(src.id);
+			}
+  		}
+  	</script>
+  </head>
+  
+  <body id="example">
+  	<div id="doc">
+  		<h1>Ajax 连接队列</h1>
+  		<div id="queue-items"></div>
+  		<div id="add-stuff">
+  			<h2>添加请求到队列</h2>
+  			<ul id="adders">
+  				<li><a href="#" id="action-01">添加01到队列</a></li>
+  				<li><a href="#" id="action-02">添加02到队列</a></li>
+  				<li><a href="#" id="action-03">添加03到队列</a></li>
+  			</ul>
+  		</div>
+  			<h2>其他队列动作</h2>
+  			<ul id="items">
+  				<li><a href="#" id="flush">启动</a></li>
+  				<li><a href="#" id="dequeue">出栈</a></li>
+  				<li><a href="#" id="pause">暂停</a></li>
+  				<li><a href="#" id="clear">清除</a></li>
+  			</ul>
+  			<div id="result-area">
+  				<h2>结果:</h2>
+  				<div id="results"></div>
+  			</div>
+  	</div>
+  </body>
+</html>

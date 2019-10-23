@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>easyUIFilterGrid.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+    <link rel="stylesheet" type="text/css" href="../easyUI/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="../easyUI/themes/default/easyui.css">
+    <script type="text/javascript" src="../easyUI/jquery.min.js"></script>
+    <script type="text/javascript" src="../easyUI/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../easyUI/extension/datagrid-filter.js"></script>
+    <script type="text/javascript" src="../easyUI/locale/easyui-lang-zh_CN.js"></script>
+	<style>
+		.icon-filter{
+			background:url('images/filter.png') no-repeat center center;
+		}
+	</style>
+  </head>
+  
+  <body>
+  	<table></table>
+  	<script type="text/javascript">
+  	var data = [
+           	{"productid":"FI-SW-01","productname":"Koi","unitcost":10.00,"status":"P","listprice":36.50,"attr1":"Large","itemid":"EST-1"},
+        	{"productid":"K9-DL-01","productname":"Dalmation","unitcost":12.00,"status":"P","listprice":18.50,"attr1":"Spotted Adult Female","itemid":"EST-10"},
+        	{"productid":"RP-SN-01","productname":"Rattlesnake","unitcost":12.00,"status":"P","listprice":38.50,"attr1":"Venomless","itemid":"EST-11"},
+        	{"productid":"RP-SN-01","productname":"Rattlesnake","unitcost":12.00,"status":"P","listprice":26.50,"attr1":"Rattleless","itemid":"EST-12"},
+        	{"productid":"RP-LI-02","productname":"Iguana","unitcost":12.00,"status":"P","listprice":35.50,"attr1":"Green Adult","itemid":"EST-13"},
+        	{"productid":"FL-DSH-01","productname":"Manx","unitcost":12.00,"status":"N","listprice":158.50,"attr1":"Tailless","itemid":"EST-14"},
+        	{"productid":"FL-DSH-01","productname":"Manx","unitcost":12.00,"status":"P","listprice":83.50,"attr1":"With tail","itemid":"EST-15"},
+        	{"productid":"FL-DLH-02","productname":"Persian","unitcost":12.00,"status":"P","listprice":23.50,"attr1":"Adult Female","itemid":"EST-16"},
+        	{"productid":"FL-DLH-02","productname":"Persian","unitcost":12.00,"status":"N","listprice":89.50,"attr1":"Adult Male","itemid":"EST-17"},
+        	{"productid":"AV-CB-01","productname":"Amazon Parrot","unitcost":92.00,"status":"N","listprice":63.50,"attr1":"Adult Male","itemid":"EST-18"}
+        ];
+  		var dg =$('table').datagrid({
+  			filterBtnIconCls:'icon-filter',
+  			title:'可过滤数据的数据列',
+  			width:700,
+  			height:250,
+  			singleSelect:true,
+			data:data,
+			columns:[[
+					{field:'itemid',title:'Item ID',width:80},
+					{field:'productid',title:'Product',width:100},
+					{field:'listprice',title:'List Price',width:80,align:'right'},
+					{field:'unitcost',title:'Unit Cost',width:80,align:'right'},
+					{field:'attr1',title:'Attribute',width:250},
+					{field:'status',title:'Status',width:60,align:'center'}
+			]]
+  		});
+  		dg.datagrid('enableFilter',[{
+  				field:'listprice',
+				type:'numberbox',
+				options:{precision:1},
+				op:['equal','notequal','less','greater']
+  		
+  		},{
+			field:'unitcost',
+			type:'numberbox',
+			options:{precision:1},
+			op:['equal','notequal','less','greater']
+			},{
+				field:'status',
+				type:'combobox',
+				options:{
+					panelHeight:'auto',
+					data:[{value:'',text:'All'},{value:'P',text:'P'},{value:'N',text:'N'}],
+					onChange:function(value){
+						if (value == ''){
+							dg.datagrid('removeFilterRule', 'status');
+						} else {
+							dg.datagrid('addFilterRule', {
+								field: 'status',
+								op: 'equal',
+								value: value
+							});
+						}
+						dg.datagrid('doFilter');
+					}
+				}
+			}]);
+  	</script>
+  </body>
+</html>

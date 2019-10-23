@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>属性操作.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <!-- 
+    	jquery对象的attr方法
+    	attr(attr,value) 为jquery对象包含的dom对象设置属性
+    	attr(config) 传入一个配置对象为jquery对象包含的dom对象设置属性
+    	attr(attr,fn) 为jquery对象包含的dom对象通过调用函数的返回值为其设置属性
+    	attr(attr)获取属性值
+    	
+    	jquery对象的prop方法和attr方法用法相同 只不过是专门操作checkbox元素的
+    	
+    	jquery对象的 addClass方法 为query对象包含的dom对象添加类名 addClass(class|fn) 对应removeClass(class|fn) ,toggleClass(class|fn)
+    	
+    	还有val(),text(),html()等方法
+    	
+     -->
+    <script type="text/javascript" src="../common/js/jquery-1.12.4.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			//与css用法一样
+			$('img').attr('alt','突破了').attr('title','hehe');
+			$('img').attr({alt:'秃鹰破了',title:'嘎嘎',name:'名字'});
+			console.info($('img').attr('name'));
+			
+			 //对于布尔类型的属性，不要attr方法，应该用prop方法 prop用法跟attr方法一样。
+			$('input:eq(0)').click(function(){
+				$('#ck').prop("checked", true);
+			})
+			$('input:eq(1)').click(function(){
+				$('#ck').prop("checked", false);
+			})
+			
+			//removeAttr移除属性的方法
+		})
+		
+	</script>
+  </head>
+  
+  <body>
+   <img alt="图拍" src="img/04.gif" title="蛤蛤"/><br/>
+    <input type="button" value="选中">
+	<input type="button" value="不选中">
+	<input type="checkbox" id="ck">
+  </body>
+</html>

@@ -1,0 +1,11 @@
+[
+{"name": "Argentina", "year": 2005, "continent": "South America", "form": "Republic", "gdp": 2, "oil": 1.5, "balance": 4.69},
+{"name": "Argentina", "year": 2006, "continent": "South America", "form": "Republic", "gdp": 2.507, "oil": 0.732, "balance": 2.167},
+{"name": "Argentina", "year": 2007, "continent": "South America", "form": "Republic", "gdp": 60.071, "oil": 2.845, "balance": 6.728},
+{"name": "China", "year": 2005, "continent": "South America", "form": "Republic", "gdp": 2, "oil": 1.545, "balance": 2.699},
+{"name": "China", "year": 2006, "continent": "South America", "form": "Republic", "gdp": 22.507, "oil": 1.732, "balance": 7.167},
+{"name": "China", "year": 2007, "continent": "South America", "form": "Republic", "gdp": 20.071, "oil": 2.85, "balance": 6.78},
+{"name": "Japan", "year": 2005, "continent": "South America", "form": "水果", "gdp": 2, "oil": 1.545, "balance": 3.699},
+{"name": "USA", "year": 2006, "continent": "South America", "form": "水果", "gdp": 2.507, "oil": 1.62, "balance": 1.067},
+{"name": "Japan", "year": 2007, "continent": "South America", "form": "水果", "gdp": 26.071, "oil": 2.85, "balance": 3.728}
+]

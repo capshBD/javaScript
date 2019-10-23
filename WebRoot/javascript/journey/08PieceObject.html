@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>8Piece.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+    <!--hasOwnProperty检测本地属性(必须是自己本地的，构造函数prototype的属性都不行),propertyIsEnumerable检测是否可枚举,isPrototypeOf检测对象是否被某个对象继承
+    	继承字面量对象,
+    -->
+    <script type="text/javascript">
+    	function Point(x,y,z){
+    		this.x=x;
+    		this.y=y;
+    	}
+    	Point.saying=function(){
+    		console.info(this.length);//输出的是Point函数的length属性
+    	}
+    	Point.prototype.toPoint=function(){
+    	    alert(1);
+    	}
+    	console.info(Point);
+    	Point.saying();
+    	
+    	var p=new Point();
+    	
+    	//delete Point.prototype;
+    	console.info(Point.prototype);
+    	console.info(p.constructor==Point);//返回true
+    	console.info(p.constructor==Object);//false
+    	//检测自己的属性
+    	console.info(Date.prototype.hasOwnProperty("toString"));//Date的prototype属性有toString属性 true
+    	console.info(Point.hasOwnProperty("saying"));//true
+    	console.info(p.hasOwnProperty("toPoint"));//false
+    	
+   		 //是否可以枚举
+    	function f(name,age){
+    		this.name=name;
+    		this.age=age;
+    	}
+    	
+    	f.prototype.sex="boy";
+    	f.prototype.sayHi=function(){
+    		console.info(this.name+"HI");
+    	}
+    	f.method=function(){}
+    	
+    	var obj=new f("joke",22);
+    	
+    	console.info("age是否可枚举"+(obj.propertyIsEnumerable("age")))//true
+    	console.info("sex是否可枚举"+(obj.propertyIsEnumerable("sex")))//原型对象的属性不可以枚举
+    	console.info("f的method是否可枚举"+f.propertyIsEnumerable("method"))//true
+    	console.info("obj对象的自身属性"+(obj.hasOwnProperty("name")));
+    	console.info("obj对象的自身属性"+(obj.hasOwnProperty("sex")));//false
+    	
+    	for(var i in obj)//能访问本体属性以及构造函数的prototype属性
+    	console.info(i+"=="+obj[i]);
+    	
+    	console.info(f.prototype.isPrototypeOf(obj));//判断f的原型属性是否被obj对象继承
+    	console.info(Object.prototype.isPrototypeOf(obj));//判断f的原型属性是否被obj对象继承
+    	
+    	//字面量对象
+    	var CoreMethods={
+	  		add:function(a,b){
+	  			return a+b;
+	  		},
+	  		minus:function(a,b){
+	  			return a-b;
+	  		},
+	  		multiply:function(a,b){
+	  			return a*b
+	  		}
+  	 };
+  	//为CoreMethods对象添加一个含有闭包变量的方法
+  	var simpleMath=function(a,b){
+  		var methods=CoreMethods;
+  		methods.power=function(){
+  			return Math.pow(a, b);
+  		}
+  		
+  		return methods;
+  	}
+  	
+  	var math=new simpleMath(4,3);
+  	console.info(math.power());
+  	console.info(math.multiply(2,7))
+  	console.info(CoreMethods.power()+"|");
+    	
+	
+  	function object(o){
+  		function F(){};
+  		F.prototype=o;
+  		
+  		return new F();
+  	}
+  	
+  	var md=object(CoreMethods);
+  	console.info(md.power()+"||");
+  	
+  	function H(){}
+  	H.prototype=CoreMethods;
+  	console.info(new H().power()+"|||");
+  	
+  	for(var property in CoreMethods)
+  		console.info(CoreMethods[property]);
+  		
+  	var queryComponents={
+  		sortBy:'name',
+  		page:1,
+  		pages:10,
+  		resultPerPage:20
+  	};
+  	
+  	function queryBuilder(obj){
+  	
+  	//为所有对象添加一个继承方法 把obj对象的属性拷贝到自己身上
+  	Object.prototype.extend=function(obj){
+  		for(var property in obj)	
+  		this[property]=obj[property];
+  		return this;
+  	};
+  	
+  		var stringBd='?';
+  		
+  		for(var pro in obj){
+  		 if(obj.hasOwnProperty(pro)){
+  			if (stringBd.length>1) stringBd+='&';
+  			stringBd+=pro+"="+obj[pro];
+  		  }
+  		}
+  		
+  		console.info(stringBd);
+  		
+  		console.info(new Object().extend(obj).sortBy);
+  	}
+  	
+  	queryBuilder(queryComponents);
+  	console.info(new Object().extend(queryComponents).sortBy);    
+  	
+  	
+  	function fun(){
+    	var value=1;
+    	return {
+    		method:function(){
+    			return value;
+    		}
+    	}
+    }
+    fun.prototype={
+    	foo:function(){}
+    };
+    
+    var f1=fun();
+    console.info(typeof(f1.method));
+    console.info(typeof(f1.foo));
+    
+    
+  function Foo() {
+    var obj = {};
+    obj.value = 'blub';
+
+    var private = 2;
+    obj.someMethod = function(value) {
+        this.value = value;
+    }
+
+    obj.getPrivate = function() {
+        return private;
+    }
+   	 	return obj;
+	}
+	
+	var oob=Foo()
+	oob.someMethod("club");
+	console.info(oob.value);
+	console.info(oob.getPrivate());	
+    </script>
+
+  </head>
+  
+  <body>
+  </body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>简单动画.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+    <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+	<style>
+    body {
+      margin: 0;
+    }
+    #box {
+      width: 100px;
+      height: 100px;
+      background-color: #CCC;
+      position: absolute;
+    }
+  </style>
+  </head>
+  
+  <body>
+  	<button id="btn">移动</button><br/>
+  	<div id="box"></div>
+  </body>
+  <script type="text/javascript">
+  	var btn=document.getElementById("btn");
+  	var box=document.getElementById("box");
+  	
+  	btn.onclick=function(){
+  		var timerId=setInterval(function(){
+  			var current=box.offsetLeft;
+  			
+  			current+=8;
+  			if(current>=500){
+  				box.style.left="500px";
+  				clearInterval(timerId);
+  				return;
+  			}
+  			box.style.left=current+"px";
+  		},10)
+  	
+  	}
+  	
+  
+  </script>
+</html>

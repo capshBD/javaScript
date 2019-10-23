@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<style>
+ #hidden{ display:none; border:1px solid #C93;} 
+ 
+</style>
+<script type="text/javascript" src="jquery-1.8.3.js"></script>
+<script>
+		function hiden(){
+			
+		  //$("p:visible").css("display","none");  
+		   $("p:visible").hide();  //hide()使对象进行隐藏
+		}
+
+	function show(){
+	   //$("p:hidden").css("display","block");
+		$("p:hidden").show();   //show()让对象显示出来
+		$("#p\\#p").css("color","red"); //遇到特殊符号要用 \\来进行转译
+	}
+</script>
+
+</head>
+
+<body>
+ <p id="p#p">我是显示的</p><input type="button" onclick="hiden()" value="隐藏显示内容" />
+ <p id="hidden">我被隐藏了</p><input type="button" onclick="show()" value="显示隐藏内容" />
+</body>
+</html>

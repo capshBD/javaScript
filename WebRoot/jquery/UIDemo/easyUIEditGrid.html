@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>easyUIEditGrid.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+    <link rel="stylesheet" type="text/css" href="../easyUI/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="../easyUI/themes/default/easyui.css">
+    <script type="text/javascript" src="../easyUI/jquery.min.js"></script>
+    <script type="text/javascript" src="../easyUI/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../easyUI/extension/jquery.edatagrid.js"></script>
+    <script type="text/javascript" src="../easyUI/locale/easyui-lang-zh_CN.js"></script>
+	
+  </head>
+  
+  <body>
+  	<table></table>
+  	<div style="margin-bottom:10px">
+		<a href="#" onclick="javascript:$('#tt').edatagrid('addRow')">添加新行</a>
+		<a href="#" onclick="javascript:$('#tt').edatagrid('saveRow')">保存编辑</a>
+		<a href="#" onclick="javascript:$('#tt').edatagrid('cancelRow')">取消编辑</a>
+		<a href="#" onclick="javascript:$('#tt').edatagrid('destroyRow')">销毁此行</a>
+	</div>
+  	<table id="tt">   
+    <thead>   
+        <tr>   
+            <th field="itemid" width="100" editor="{type:'validatebox',options:{required:true}}">栏目ID</th>   
+            <th field="productid" width="100" editor="text">产品ID</th>   
+            <th field="listprice" width="100" align="right" editor="{type:'numberbox',options:{precision:1}}">价格</th>   
+            <th field="unitcost" width="100" align="right" editor="numberbox">卖价</th>   
+            <th field="attr1" width="150" editor="text">属性</th>   
+        </tr>   
+    </thead>   
+	</table>  
+  	<script type="text/javascript">
+		$('#tt').edatagrid({
+			width:600,
+			height:400,
+			title:'可编辑的数据列',
+			url:'datagrid_data.json',
+			singleSelect:true,
+			destroyMsg:{
+				norecord:{    // 在没有记录选择的时候执行
+					title:'警告',
+					msg:'请选择一条记录,继续进行'
+				},
+				confirm:{       
+					msg:'确认删除?'
+				}
+			 }
+			
+			});
+	</script>
+  </body>
+</html>

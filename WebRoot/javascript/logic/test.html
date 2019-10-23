@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<script type="text/javascript">
+	var fnc=(function(){
+	    var i=0;
+	    var sum=0;
+	    
+	    return function(){
+	        if(++i<=100){
+	            sum+=i;
+	            return arguments.callee();
+	        }	  
+	      return  sum;
+	    }
+	    
+	})();
+	alert(fnc());
+	
+</script>
+<body>
+
+</body>
+</html>

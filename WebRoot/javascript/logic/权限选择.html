@@ -1,0 +1,94 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        select {
+            width:200px;
+            height: 200px;
+            background-color: #33cccc;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+  <select id="all" multiple="multiple">
+    <option>增</option>
+    <option>删</option>
+    <option>改</option>
+    <option>查</option>
+  </select>
+
+  <input type="button" value=">>" id="btn1">
+  <input type="button" value="<<" id="btn2">
+  <input type="button" value=">" id="btn3">
+  <input type="button" value="<" id="btn4">
+
+  <select id="select" multiple="multiple">
+    
+  </select>
+  <script src="common.js"></script>
+  <script>
+    // 权限选择
+
+    // 存放所有权限的列表
+    var all = my$('all');
+    // 存放选中的权限的列表
+    var select = my$('select');
+
+    
+    // 1 全选
+    my$('btn1').onclick = function () {
+      // all.children
+      // document.querySelectorAll()
+     var len = all.children.length;
+      for (var i = 0; i < len; i++) {
+        var li = all.children[0];//每次移动到另一边后,children就少一个,所以每次都要取第一个child
+        select.appendChild(li);
+      }
+    }
+
+    // 2 全不选
+    
+     my$('btn2').onclick = function () {
+     	var length=select.children.length;
+     	for(var i=0;i<length;i++){
+     		 var li = select.children[0];//每次移动到另一边后,children就少一个,所以每次都要取第一个child
+     		 all.appendChild(li);
+     	}
+      
+    }
+
+    // 3 选择选中的项
+    my$('btn3').onclick = function () {
+    	var len = all.children.length;
+      for (var i = 0; i < len; i++) {
+        var li = all.children[i];
+        if(!li) return;
+        // 判断li是否选中
+        if (li.selected) {
+          select.appendChild(li);
+          i--;//选中移动到另一边后,索引必须减一
+        }
+      }
+    }
+
+    // 4 移除选中的项
+      my$('btn4').onclick = function () {
+    	var len = select.children.length;
+      for (var i = 0; i < len; i++) {
+        var li = select.children[i];
+        if(!li) return;
+        // 判断li是否选中
+        if (li.selected) {
+          all.appendChild(li);
+          i--;//选中移动到另一边后,索引必须减一
+        }
+      }
+    }
+  </script>
+  
+</body>
+</html>

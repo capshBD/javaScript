@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>easyUIEdiTree.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+    <link rel="stylesheet" type="text/css" href="../easyUI/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="../easyUI/themes/default/easyui.css">
+    <script type="text/javascript" src="../easyUI/jquery.min.js"></script>
+    <script type="text/javascript" src="../easyUI/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../easyUI/extension/jquery.etree.js"></script>
+    <script type="text/javascript" src="../easyUI/locale/easyui-lang-zh_CN.js"></script>
+
+  </head>
+  
+  <body>
+  	<div style="margin-bottom:10px">
+		<a href="#" onclick="javascript:$('#tt').etree('create')">创建</a>
+		<a href="#" onclick="javascript:$('#tt').etree('edit')">编辑</a>
+		<a href="#" onclick="javascript:$('#tt').etree('destroy')">销毁</a>
+	</div>
+   <ul id="tt"></ul>
+   <script type="text/javascript">
+   		$('#tt').etree({
+					url: 'tree_data.json'
+			});
+   </script>
+  </body>
+</html>

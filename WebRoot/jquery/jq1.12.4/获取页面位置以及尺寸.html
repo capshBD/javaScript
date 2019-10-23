@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>获取页面位置以及尺寸.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+      <style>
+      body{margin: 0;
+     	   padding: 0;
+     	   height: 4000px;
+      	   width: 4000px;
+     	   }
+	    #d {
+	      width: 200px;
+	      height: 200px;
+	      background-color: red;
+	      padding: 10px;
+	      border: 10px solid #000;
+	      margin: 10px;
+	    }
+	    
+	.father {
+      width: 400px;
+      height: 400px;
+      background-color: pink;
+      position: relative;
+      padding: 0px;
+      margin: 100px;
+    }
+    
+    .son {
+      width: 200px;
+      height: 200px;
+      background-color: green;
+      position: absolute;
+      top: 100px;
+      left: 100px;
+    }
+	  </style>
+    <script type="text/javascript" src="../common/js/jquery-1.12.4.js"></script>
+    <script type="text/javascript">
+    	$(function(){
+    		console.log($('#d').width());
+    		console.log($('#d').innerWidth());//padding+width
+    		console.log($('#d').outerWidth());//padding+width+border
+    		console.log($('#d').outerWidth(true));//padding+width+border+margin
+    		
+    		//页面可视区域
+    		/* $(window).resize(function(){
+    			console.log($(this).width());
+    			console.log($(this).height());
+    		}) */
+    		
+    		//获取元素的相对于document的位置
+		    console.log($(".son").offset());
+		    
+		    //获取元素相对于有定位的父元素的位置
+		    console.log($(".son").position());
+		    
+		    
+		      $(window).scroll(function () {
+			      console.log($(window).scrollTop());//顶部卷起高度
+			      console.log($(window).scrollLeft());//左侧卷起宽度
+			  });
+    	})
+    </script>
+
+  </head>
+  
+  <body>
+   <div id="d"></div>
+   <div class="father">
+	  <div class="son"></div>
+	</div>
+  </body>
+</html>

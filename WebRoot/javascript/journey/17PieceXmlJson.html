@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>17PieceXmlJson.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+    <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+    
+
+  </head>
+  
+  <body>
+  </body>
+  <script type="text/javascript">
+  		
+  		function xmlDom(s){
+	  		if(window.ActiveXObject){
+	  			var a=["MSXML2.DOMDocument.5.0",
+	  				   "MSXML2.DOMDocument.4.0",
+	  				   "MSXML2.DOMDocument.3.0",//目前IE7,8,9支持
+	  				   "MSXML2.DOMDocument",
+	  				   "Microsoft.XmlDom"];
+	  				   
+		  		for(var i in a){
+		  			try {
+		  				console.log(a[i]);
+						var o=new ActiveXObject(a[i]);
+						return o;
+					} catch (e) {
+						console.log(e.message);
+					}
+		  		
+		  		}
+		  		
+		  		throw new Error("浏览器不支持ActiveX");
+		  	 }else if(window.DOMParser&&s){
+		  	 	return new DOMParser().parseFromString(s,"text/xml");
+		  	 }
+		  	 
+		  	 else if(document.implementation&&document.implementation.createDocument){
+		  	 	return document.implementation.createDocument("","",null);
+		  	 }else{
+		  	 	throw new Error("浏览器不支持xmlDom");
+		  	 }
+  			
+  		}
+  		
+  		//为非IE浏览器的xmlDom对象返回xml字符串
+  		function xml(o){
+  			var _o=new XMLSerializer();
+  			console.info(_o);
+  			return _o.serializeToString(o);//有问题
+  		}
+  		
+  	function callback(o){
+  		return function(){
+  			switch (o.readyState) {
+			case 0:
+				 console.info("尚未初始化");
+				break;
+			case 1:
+				 console.info("正在加载数据...");
+				break;
+			case 2:
+				 console.info("完成了数据加载");
+				break;
+			case 3:
+				 console.info("已经可用,不过部分功能还无法使用");
+				break;
+			case 4:
+				 console.info("完全可用了");
+				break;
+			default:
+				break;
+			}
+  		}
+  	}
+  		
+  	var str="<recordSet><rec>1</rec><name>a</name></recordSet>"	;
+  	 var o=xmlDom(str);
+  	 console.info(o);
+  	 o.async=true;//false表示同步加载
+  	 o.onreadystatechange=callback(o);//IE才支持
+  	 o.load("Book.xml");
+  	 if(o.xml){
+  		 document.write(o.xml);
+  	 }else{
+  	 	 document.write(xml(o.documentElement));
+  	 }
+  </script>
+</html>

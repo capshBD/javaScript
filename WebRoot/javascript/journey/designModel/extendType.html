@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>extendType.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <script type="text/javascript" src="public.js"></script>
+
+  </head>
+  
+  <body>
+  	<div id="doc"></div>
+  <script type="text/javascript">
+
+  	function clone(object){
+  		function F(){}
+  		F.prototype=object;
+  		return new F();
+  	}
+  	
+  	var Person={
+  		name:'defaultName',
+  		getName:function(){
+  			return this.name;
+  		}
+  	};
+  	
+  	var reader=clone(Person);
+  	console.info(reader.getName());
+  	
+  	var author=clone(Person);
+  	author.books=[];
+  	author.getBooks=function(){
+  		return this.books;
+  	}
+  	
+  	
+  	
+  	function EditInPlaceField(id,parent,value){
+  		this.id=id;
+  		this.value=value||'default value';
+  		this.parentElement=parent;
+  		
+  		this.createElements(this.id);
+  		this.attachEvents();
+  	}
+  	EditInPlaceField.prototype={
+  		constructor:EditInPlaceField,
+  		createElements:function(id){
+  			this.containerElement=document.createElement('div');
+  			this.parentElement.appendChild(this.containerElement);
+  			
+  			this.staticElement=document.createElement('span');
+  			this.containerElement.appendChild(this.staticElement);
+  			this.staticElement.innerHTML=this.value;
+  			
+  			this.fieldElement=document.createElement('input');
+  			this.fieldElement.type='text';
+  			this.fieldElement.value=this.value;
+  			this.containerElement.appendChild(this.fieldElement);
+  			
+  			this.saveButton=document.createElement('input');
+  			this.saveButton.type='button';
+  			this.saveButton.value='Save';
+  			this.containerElement.appendChild(this.saveButton);
+  			
+  			this.cancelButton=document.createElement('input');
+  			this.cancelButton.type='button';
+  			this.cancelButton.value='Cancel';
+  			this.containerElement.appendChild(this.cancelButton);
+  			this.converToText();
+  		},
+  		attachEvents:function(){
+  			var that=this;
+  			addEventListener(this.staticElement,'click',function(){that.converToEditable();});
+  			addEventListener(this.saveButton,'click',function(){that.save();});
+  			addEventListener(this.cancelButton,'click',function(){that.cancel();});
+  		},
+  		converToEditable:function(){
+  			this.staticElement.style.display='none';
+  			this.fieldElement.style.display='inline';
+  			this.saveButton.style.display='inline';
+  			this.cancelButton.style.display='inline';
+  			
+  			this.setValue(this.value);
+  		},
+  		save:function(){
+  			this.value=this.getValue();
+  			var that=this;
+  			var callback={
+  				success:function(){that.converToText();},
+  				failure:function(){alert('Error Saving value.');}
+  			};
+  			ajaxRequest('GET','save.jsp?id='+this.id+'&value='+this.value,callback);
+  		},
+  		cancel:function(){
+  			this.converToText();
+  		},
+  		converToText:function(){
+  			this.fieldElement.style.display='none';
+  			this.saveButton.style.display='none';
+  			this.cancelButton.style.display='none';
+  			this.staticElement.style.display='inline';
+  			this.setValue(this.value);
+  		},
+  		setValue:function(value){
+  			this.fieldElement.value=value;
+  			this.staticElement.innerHTML=value;
+  		},
+  		getValue:function(){
+  			return this.fieldElement.value;
+  		}
+  	};
+  	
+  	var titleClassical=new EditInPlaceField('titleClass',document.getElementById('doc'),'标题');
+  	var currentTitleText=titleClassical.getValue();
+  	
+  	/*****************/
+   function EditInPlaceArea(id,parent,value){
+   	EditInPlaceArea.superclass.constructor.call(this,id,parent,value);
+   };
+   
+   extend(EditInPlaceArea, EditInPlaceField);
+   
+   EditInPlaceArea.prototype.createElements=function(id){
+   			this.containerElement=document.createElement('div');
+  			this.parentElement.appendChild(this.containerElement);
+  			
+  			this.staticElement=document.createElement('p');
+  			this.containerElement.appendChild(this.staticElement);
+  			this.staticElement.innerHTML=this.value;
+  			
+  			this.fieldElement=document.createElement('textarea');
+  			this.fieldElement.value=this.value;
+  			this.containerElement.appendChild(this.fieldElement);
+  			
+  			this.saveButton=document.createElement('input');
+  			this.saveButton.type='button';
+  			this.saveButton.value='Save';
+  			this.containerElement.appendChild(this.saveButton);
+  			
+  			this.cancelButton=document.createElement('input');
+  			this.cancelButton.type='button';
+  			this.cancelButton.value='Cancel';
+  			this.containerElement.appendChild(this.cancelButton);
+  			this.converToText();
+   		};
+   		
+   		EditInPlaceArea.prototype.converToEditable=function(){
+  			this.staticElement.style.display='none';
+  			this.fieldElement.style.display='block';
+  			this.saveButton.style.display='inline';
+  			this.cancelButton.style.display='inline';
+  			
+  			this.setValue(this.value);
+  		};
+   		EditInPlaceArea.prototype.converToText=function(){
+  			this.fieldElement.style.display='none';
+  			this.saveButton.style.display='none';
+  			this.cancelButton.style.display='none';
+  			this.staticElement.style.display='block';
+  			
+  			this.setValue(this.value);
+  		};
+   
+   var editArea=new EditInPlaceArea('title',document.getElementById('doc'),'多行域');
+  </script>
+  </body>
+</html>

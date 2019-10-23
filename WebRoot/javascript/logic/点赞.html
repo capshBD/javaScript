@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>点赞.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+    <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+
+  </head>
+  
+  <body>
+  	小宁<input type="button" value="(0)赞">&nbsp;&nbsp;
+  	李干柴<input type="button" value="(0)赞">&nbsp;&nbsp;
+  	胡军<input type="button" value="(0)赞">&nbsp;&nbsp;
+  	李逍遥<input type="button" value="(0)赞">&nbsp;&nbsp;
+  </body>
+  <script type="text/javascript">
+  	var btns=document.getElementsByTagName("input");
+  	
+  	function getValue(){
+  		var value=0;
+  		return function(){
+  			this.value="("+(++value)+")赞";
+  		}
+  	}
+  	
+  	for(var i=0;i<btns.length;i++){
+  		btns[i].onclick=getValue();
+  	}
+  
+  </script>
+  
+</html>

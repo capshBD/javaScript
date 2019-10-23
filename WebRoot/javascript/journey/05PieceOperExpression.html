@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>5Piece.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+    <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+
+  </head>
+  
+  <body>
+ 	<script type="text/javascript">
+ 		var a=1;
+ 		var res=a++ + ++a -a++ - ++a;// 把每一个表达式用一个变量接收
+ 		console.info(res);
+ 		
+ 		// 十进制负数的二进制 为相应十进制正数的二进制每位取反,然后最后一位+1 
+ 		// 首位为1的二进制(负数)转化为十进制 先将每位取反,然后最后一位+1转化为正的十进制 ,最后前面加-号
+ 		/*
+ 			^异或运算符,位相同取0,不相同取1
+ 			~位非运算符 每位取反 实际上等于 原来值的相反数-1
+ 			右移运算符>> 正数右移 从最左侧有效位(1)开始右移,溢出的不要,移动过的位置补0 ;
+ 			负数右移 从最左侧有效位(0)开始右移,溢出的不要,移动过的位置补1
+ 			负数左移  从最左侧有效位(0)开始左移,移动过的位置补0
+ 		  */
+ 		  console.info(~-12);
+ 		  
+ 		  
+ 		  //逻辑运算符
+ 		  //如果第一个表达式是真,则返回第二个表达式的类型
+ 		  console.info(typeof ({}&&true));
+ 		  console.info(typeof ({}&&false));
+ 		  console.info(typeof (true&&{}));
+ 		  console.info(typeof (false&&{}));
+ 		  
+ 		  console.info(typeof (NaN&&"NaN"));
+ 		  console.info(typeof ("NaN"&&NaN));
+ 		  
+ 		  console.info(typeof ("undefined"&&undefined));
+ 		  console.info(typeof (undefined&&"undefined"));
+ 		  
+ 		  console.info(!NaN);//true
+ 		  console.info(Infinity);//Infinity
+ 		  
+ 	</script>
+  </body>
+</html>

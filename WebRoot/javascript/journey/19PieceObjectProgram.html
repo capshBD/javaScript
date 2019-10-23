@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>19Piece.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+    <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+	<script type="text/javascript">
+    	//构造函数内部定义的属性是为了给实例化的对象是用的
+    	function Person(name,age,sex){
+    		this.name=name;
+    		this.age=age;
+    		this.sex=sex;
+    		this.eat=function(){
+    			console.log("对象自己定义的方法"+this.name+this.age+"吃饭了");
+    		}
+    	}
+    	
+    	//函数都有一个prototype属性，是一个对象，里面有一个重要的属性constructor，指向的函数本身，可以对prototype属性添加变量或方法
+    	Person.prototype.issue="学生";
+    	Person.prototype.study=function (){
+    		console.log("原型方法"+this.name+"学习js");
+    	}
+    	
+    	var per1=new Person("tom",22,false);
+    		console.log(per1.name+"|"+per1.age+"|"+per1.issue);
+    		per1.eat();
+    	//通过实例化对象可以调用构造函数的原型属性上的方法和变量，因为实例化对象拥有一个_proto_属性和构造函数的prototype属性是同一个对象
+    		per1.study();
+    	console.info(per1);	
+    	console.info(Person);
+    	
+    	console.info(Person.prototype.constructor==per1.__proto__.constructor);
+    	per1.__proto__.study();//this.name为undefined
+    	
+    	
+    	//第二个荔枝 函数的_proto_属性和系统的Function函数的prototype属性是同一个对象
+    	function Animal(type,color){
+	    		this.type=type;
+	    		this.color=color;
+    		}
+    		console.info(Animal.constructor);//Function
+    	//这种方式要手动添加一个constructor
+	    Animal.prototype={
+	    	constructor:Animal,
+	    	email:"110",
+	    	hoop:function(){
+	    		console.log("hoop..."+this.type);
+	    		this.sleep();
+	    	},
+	    	sleep:function(){
+	    		console.log("sleep...");
+	    	}
+	    }	
+	    
+	  
+	    var dog=new Animal("哈巴");
+	    console.info(dog);	
+    	console.info(Animal);
+	    	dog.hoop();
+    	
+    </script>
+    
+     <script type="text/javascript">
+    
+    	function ChangeColor(width,height,color){
+    		this.width=width;
+    		this.height=height;
+    		this.color=color;
+    		
+    	}
+    	
+    	ChangeColor.prototype.init=function(compent){
+    		compent.style.width=this.width+"px";
+    		compent.style.height=this.height+"px";
+    		compent.style.backgroundColor=this.color;
+    	}
+    	 
+    	 function getBinaryNum(){
+    	 	var char=['0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'];
+    	 	
+    	 	var str="";
+    	 	
+    	 	for(var i=0;i<6;i++){
+    	 		str+=char[parseInt(Math.random()*16)];
+    	 	}
+    	 	
+    	 	return "#"+str;
+    	 }
+    	 
+    	 function changeDiv(){
+    	 	var obj=new ChangeColor("299","200",getBinaryNum());
+    	 	obj.init(document.getElementById("changeDiv"));
+    	 }
+    	 
+    	 
+    </script>
+  </head>
+  
+  <body>
+  	
+  	<input type="button" value="点击我换颜色" onclick="changeDiv()">
+  	<div id="changeDiv"></div>
+  </body>
+  
+  <script type="text/javascript">
+  //null没有length属性,而{}.length=undefined;
+  console.info("Function是否是Object的实例"+(Function instanceof Object));
+  console.info("Object是否是Function的实例"+(Object instanceof Function));
+  	console.info(("null是否是Object的实例")+(null instanceof Object));
+  	console.info(("{}是否是Object的实例")+({} instanceof Object));
+  	
+  	//坐标点对象
+  	function p(x,y){
+  		if(x)this.x=x;
+  		if(y)this.y=y;
+  		p.prototype.x=0;
+  		p.prototype.y=0;
+  	}
+  	
+  	//计算距离对象,禁止自扩展对象属性
+  	function l(a,b){
+  		var a=a;
+  		var b=b;
+  		var w=function(){
+  			return Math.abs(a.x-b.x);
+  		}();//禁止自扩展对象属性
+  		var h=function(){
+  			return Math.abs(a.y-b.y);
+  		}();//禁止自扩展对象属性
+  		this.length=function(){
+			return Math.sqrt(w*w+h*h);  		
+  		}
+  		
+  		this.aa=function(){
+  			return a;
+  		}
+  		this.bb=function(){
+  			return b;
+  		}
+  	}
+  	
+  	var p1=new p(1,2);
+  	var p2=new p(10,20);
+  	
+  	var ll=new l(p1,p2);
+  	console.info(ll.length());
+  	ll.bb().x=50;//改了不会影响ll对象的方法
+  	console.info(ll.length());
+  	
+  	
+  	//继承
+  	function A(x){
+  		this.getl=function(){
+  			return x;
+  		}
+  	}
+  	
+  	A.prototype.has=function(){
+  		return !(this.getl()==0);
+  	}
+  	
+ 	function B(){
+ 		var a=[];
+ 		A.call(this,arguments.length);
+ 		
+ 		for(var i in arguments)
+ 			a.push(arguments[i]);
+ 		
+ 		this.add=function(){
+ 			for(var i in arguments)
+ 		 	a.push.apply(a,arguments[i]);
+ 		}
+ 		
+ 		this.getA=function(){
+ 			return a;
+ 		}
+ 	}
+ 	
+ 	B.prototype=new A();
+ 	B.prototype.constructor=B;
+ 	B.prototype.str=function(){
+ 		return this.getA().toString();
+ 	}
+ 		
+ 	function C(){
+ 		B.apply(this, arguments);
+ 		this.sort=function(){
+ 			var a=this.getA();
+ 			a.sort.apply(a,arguments);
+ 		}
+ 	}
+ 	C.prototype=new B();
+ 	C.prototype.constructor=C;
+ 	
+ 	var bo=new B(1,2,3,4);
+ 	console.info(bo.getl());
+ 	console.info(bo.has());
+ 	bo.add([11,22,33,44]);
+ 	console.info(bo.getA());
+ 	//C的实例
+ 	var co=new C("b","a","c");
+ 	console.info(co.getl());
+ 	console.info(co.has());
+ 	co.add(["f","d"]);
+ 	console.info(co.getA());
+ 	co.sort();
+ 	console.info(co.getA());
+ 	
+ 	
+ 	//继承封装
+ 	function extend(Sub,Sup){
+ 		var F=function(){};
+ 		F.prototype=Sup.prototype;
+ 		Sub.prototype=new F();
+ 		Sub.prototype.constructor=Sub;
+ 		Sub.sup=Sup.prototype;//在子类中定义一个本地属性储存超类原型,避免子类与超类耦合
+ 		if(Sup.prototype.constructor==Object.prototype.constructor)
+ 			Sup.prototype.constructor=Sup;
+ 	}
+ 	
+ 	function Parent(x){
+ 		this.x=x;
+ 		this.get=function(){
+ 			return this.x;
+ 		}
+ 	}
+ 	
+ 	Parent.prototype.add=function(){
+ 		return this.x+this.x;
+ 	}
+ 	Parent.prototype.mul=function(){
+ 		return this.x*this.x;
+ 	}
+ 	
+ 	function Child(x){
+ 		Parent.call(this,x);
+ 	}
+	
+	extend(Child, Parent);
+	
+	var child=new Child(5);
+	console.info(child.get());
+	console.info(child.add());
+	console.info(child.mul());
+	child.mul=function(){
+		return "MUL";
+	}
+	console.info("超类"+Child.sup.mul.call(child));
+	console.info("子类"+child.mul());
+	
+	//复制继承
+	Function.prototype.extend=function(o){
+		for(var i in o){
+			this.constructor.prototype[i]=o[i];
+		}
+	}
+	
+	var fc=function(){};
+	fc.extend(child);
+	console.info(fc.get());
+	
+	//克隆继承
+	Function.prototype.clone=function(o){
+		function Temp(){}
+		Temp.prototype=o;
+		return new Temp();
+	}
+	var fcc=function(){};
+	console.dir(fcc.clone(child));
+	console.info(fcc.get());
+	
+  </script>
+</html>

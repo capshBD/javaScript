@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>jq相关插件.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+   <style>
+    div {
+      width: 400px;
+      height: 4000px;
+      background-color: #CCC;
+    }
+    span {
+      width: 200px;
+      height: 200px;
+      background-color: #CCC;
+    }
+  </style>
+	<script src="../common/js/jquery-1.12.4.js"></script>
+	<script src="../common/js/jquery.color.js"></script>
+	<script src="../common/js/jquery.lazyload.js"></script>
+	<script type="text/javascript">
+		$.fn.bgColor=function(color){
+			this.css("backgroundColor",color);
+			return this;
+		}
+	</script>
+	<script type="text/javascript">
+		  $(function () {
+		    //3. 直接使用即可。
+		    //说明jquery不支持颜色的渐变,颜色最好用16进制
+		    $('div').animate({backgroundColor:"#ffc0cb"}, 3000, function () {
+		        alert("呵呵");
+		    });
+		  	
+		  	$('span').bgColor('#ffc0cb');
+		  	$("img.lazy").lazyload();
+		  });
+	</script>
+  </head>
+  
+  <body>
+    <div></div>
+    <img class="lazy" data-original="img/02.gif" alt="">
+    <span>span</span>
+  </body>
+</html>

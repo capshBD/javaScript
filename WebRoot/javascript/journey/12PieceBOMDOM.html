@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>14Piece.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+    <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+	<script type="text/javascript">
+		function f(){
+			w=window.open();
+		}
+		//打开一个新窗口,并设置属性
+		var url="http://www.css8.com";
+		var features="height=100,width=300,top=200,left=100,toolbar=no,menubar=no,scollbar=no";
+		//document.write('<a href="http://www.sina.com/" target="newM">百度</a>');
+		
+		/* var me=window.open(url,"newM",features);
+		
+		setTimeout(function(){
+			me.close();
+		}, 30000); */
+		
+		//检测客户端类型
+		console.info(navigator.userAgent);
+		console.info(navigator.userLanguage +"|" +navigator.language);
+		console.info(Object.prototype.toString.call(document.namespaces));
+		console.info(window.namespaceURI+"|");
+	
+	</script>
+  </head>
+  
+    <!-- rows代表frameset中的行依次占的高度,cols代表frameset中每行的列占的宽度 
+         rows="90%,*" 代表里面分割的frame分别所占的高度 为90%和10%
+         cols="30%,*,20%"  代表里面分割的frame分别所占的宽度
+    -->
+    
+   <frameset rows="90%,*" cols="*" frameborder="yes" border="1" framespacing="0">
+  		<frameset rows="*" cols="30%,*,20%" framespacing="0" frameborder="yes" border="1">
+  			<frame src="left.html" name="f1" id="f1"/>
+  			<frame src="main.html" name="f2" id="f2"/>
+  			<frame src="right.html" name="f3" id="f3"/>
+  		</frameset>
+  		<frame src="buttom.html" name="f4" id="f4"/>
+   </frameset>
+   
+  <body>
+   <input type="button" value="新建一个窗口" onclick="f()"/>
+   <input type="button" value="检测w还在不" onclick="alert(w.alert)"/>
+  </body>
+	<!-- 
+		BOM(浏览器对象模型)包含:
+		Window顶级对象,每当<body>或<frameset>标签出现时,Window就会被创建,
+		每个浏览器窗口或frameset都对应一个Window,每个frameset中的窗口,无论上级有几层,
+		它的top属性始终是最顶层Window;
+		Navigator 包含浏览器信息
+		Screen包含客户端显示屏信息
+		Location 包含当前窗口Url的信息
+		History 包含浏览器窗口访问过的Url
+		Document 包含整个HTML文档
+	 -->
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>easyUITree.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+    <link rel="stylesheet" type="text/css" href="../easyUI/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="../easyUI/themes/default/easyui.css">
+    <script type="text/javascript" src="../easyUI/jquery.min.js"></script>
+    <script type="text/javascript" src="../easyUI/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../easyUI/locale/easyui-lang-zh_CN.js"></script>
+	<script type="text/javascript">
+		$(function(){
+				var data=[{
+				    id: 1,
+				    text: 'java',
+				    children: [{
+				        id: 11,
+				        text: 'JavaScript'
+				    },{
+				        id: 12,
+				        text: 'jquery',
+				        children:[{
+				            id:121,
+				            text:'jqueryUI'
+				        }]
+				    }]
+				},{
+				    id: 2,
+				    text: 'Python',
+				    children: [{
+				        id: 21,
+				        text: 'Python1'
+				    },{
+				        id: 22,
+				        text: 'Python2'
+				    }]
+				}];
+				$('#cc').combotree({
+					editable:true,
+					checkbox:true
+				});
+				$('#cc').combotree('loadData',data);
+		})
+		
+	</script>
+  </head>
+  
+  <body>
+    <input id="cc" value="2"> 
+  </body>
+</html>

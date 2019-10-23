@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>easyUITab.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+    <link rel="stylesheet" type="text/css" href="../easyUI/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="../easyUI/themes/default/easyui.css">
+    <script type="text/javascript" src="../easyUI/jquery.min.js"></script>
+    <script type="text/javascript" src="../easyUI/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../easyUI/locale/easyui-lang-zh_CN.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			$('#tt').tabs({
+				tools:[{
+					iconCls:'icon-add',
+					handler:function(){
+						$('#tt').tabs('add',{
+				        	 title:'New Tab',    
+						     content:'Tab Body',    
+						     closable:true,
+						     tools:[{    
+					        iconCls:'icon-mini-refresh',    
+					        handler:function(){    
+					            console.info('refresh');    
+					        }    
+					   	  }] 
+				        });
+					}
+				},{
+					iconCls:'icon-save',
+					handler:function(){
+						alert('保存');
+					}
+				}],
+				border:false, 
+				onSelect:function(title){    
+			        console.info(title+' is selected');
+			    } 
+			});
+		    console.info($('#tt')) ;  
+		    $('button').click(function(){
+		    	var pp= $('#tt').tabs('getSelected');
+		    	console.info(pp.constructor);
+		    	var tab=pp.panel('options');
+		    	console.info(tab);
+		    	console.info(tab.tab.constructor);
+		    })
+		})
+	</script>
+  </head>
+  
+  <body>
+  	<div id="tt" style="width:500px;height:250px;">   
+    <div title="选项卡1" style="padding:20px;display:none;">   
+        tab1    
+    </div>   
+    <div title="选项卡2" style="overflow:auto;padding:20px;display:none;">   
+        tab2    
+    </div>   
+    <div title="选项卡3" style="padding:20px;display:none;">   
+        tab3    
+    </div>   
+	</div>  
+	<button>获取</button>
+  </body>
+</html>

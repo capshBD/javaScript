@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>easyUIMB.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+    <link rel="stylesheet" type="text/css" href="../easyUI/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="../easyUI/themes/default/easyui.css">
+    <script type="text/javascript" src="../easyUI/jquery.min.js"></script>
+    <script type="text/javascript" src="../easyUI/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../easyUI/locale/easyui-lang-zh_CN.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			$('#mm').menu({
+				onShow:function(){
+					console.info("i am out");
+				},
+				onClick:function(item){
+					console.info(item);
+				}
+			});
+			
+			  $('#mm').menu('show', {   
+			    left: 400,   
+			    top: 0   
+			  });
+			  
+			   var itemEl = $('#m-pt')[0];  // 获取菜单项
+				var item = $('#mm').menu('getItem', itemEl);
+				console.log(item);
+
+		}) 
+	</script>
+  </head>
+	
+	<body>
+	<div id="mm" class="easyui-menu" style="width:120px;">
+		<div>New</div>
+		<div>
+			<span>Open</span>
+			<div style="width:150px;">
+				<div>
+					<b>Word</b>
+				</div>
+				<div>Excel</div>
+				<div id="m-pt">PowerPoint</div>
+			</div>
+		</div>
+		<div iconCls="icon-save">Save</div>
+		<div class="menu-sep"></div>
+		<div>Exit</div>
+	</div>
+	
+</body>
+</html>

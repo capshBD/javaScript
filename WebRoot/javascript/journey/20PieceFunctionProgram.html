@@ -1,0 +1,316 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>this</title>
+<script type="text/javascript">
+	/* 
+	 在JS里面，函数的几种调用方式:
+
+	 普通函数调用
+
+	 作为方法来调用
+
+	 作为构造函数来调用
+
+	 使用apply/call方法来调用
+
+	 Function.prototype.bind方法
+
+	 es6箭头函数
+
+	 但是不管函数是按哪种方法来调用的，请记住一点：谁调用这个函数或方法,this关键字就指向谁。
+
+	 */
+
+	// 1.普通函数调用
+	/*  在这段代码中world函数作为普通函数调用，实际上world是作为全局对象window的一个方法来进行调用的,即window.world();
+	      所以这个地方是window对象调用了world方法,那么world函数当中的this即指window,同时window还拥有了另外一个属性name,值为world.*/
+	
+	function world() {
+		this.name = "WORLD开始";
+		console.log(this);
+		console.log(this.name);
+	}
+	world(); //输出  window  WORLD开始  
+	
+	/*************************/
+	
+	//无可厚非
+	var name = "NAME全局变量1";
+	function person() {
+		console.log(this.name);
+	}
+	person();
+	
+	/*************************/
+	
+	//2.作为方法来调用
+	var email = "EMAIL全局变量2";
+	var animal = {
+		email : "email对象变量2",
+		showName : function() {
+			console.log(this.email);
+		}
+	}
+	animal.showName(); 
+	var showNameA = animal.showName;
+	showNameA();
+	
+	/*************************/
+	
+	var studentA = {
+		name : "studentA对象变量3",
+		showName : function() {
+			console.log(this.name);
+		}
+	}
+	var studentB = {
+		name : "studentB对象变量3",
+		sayName : studentA.showName
+	}
+	//虽然showName方法是在studentA这个对象中定义，但是调用的时候却是在studentB这个对象中调用，因此this对象指向studentB
+	studentB.sayName();
+	
+	/*************************/
+	
+	//3.作为构造函数来调用
+	function Person(name) {
+		this.name = name;
+	}
+	
+	//下面代码没有进行new操作，相当于window对象调用Person方法，那么this指向window对象，并进行赋值操作window.name="".
+	var personA = Person("全局变量PERSON4");
+	//console.log(personA.name); 
+	console.log(window.name);
+
+	var personB = new Person("对象变量person4");
+	console.log(personB.name);
+	
+	/*************************/
+	
+	//4.Function.prototype.bind()方法
+	var apple = "全局变量APPLE5";
+	function Apple(apple) {
+		this.apple = apple;
+		this.sayName = function() {
+			setTimeout(function() {
+				console.log("my name is " + this.apple);
+			}, 0)
+		}
+	}
+	var app = new Apple("对象变量apple5");
+   //这里的setTimeout()定时函数,相当于window.setTimeout(),由window这个全局对象对调用,因此this的指向为window
+	app.sayName()
+	
+	/*************************/
+	
+	var fruit = "全局变量FRUIT6";
+	function Fruit(fruit) {
+		this.fruit = fruit;
+		this.sayName = function() {
+			setTimeout(function() {
+				console.log("my name is " + this.fruit);
+			}.bind(this), 0) //注意这个地方使用的bind()方法，绑定setTimeout里面的匿名函数的this一直指向Fruit对象
+		}
+	}
+	var frt = new Fruit("对象变量fruit6");
+	frt.sayName(); 
+	
+	/*************************/
+	
+	//setTimeOut函数
+	var dog = "全局变量DOG7";
+	function Dog() {
+		this.dog = "对象变量dog7";
+		this.showName = function() {
+			console.log(this.dog);
+		}
+		setTimeout(this.showName, 0);
+	}
+	//在setTimeout(this.showName,0)语句中，会延时执行this.showName方法
+	//this.showName方法即构造函数DOG()里面定义的方法。0ms后，执行this.showName方法，this.showName里面的this此时便指向了window对象;
+	var dg = new Dog();
+	
+	/*************************/
+	
+	var empolyee = "全局变量EMPOLYEE8";
+	function Empolyee() {
+		this.empolyee = "对象变量empolyee8";
+		var that = this;
+		this.showName = function() {
+			console.log(that.empolyee);
+		}
+		setTimeout(this.showName, 0)
+	}
+	
+	//这里在Empolyee函数当中将this赋值给that，即让that保存Empolyee对象;
+	var emp = new Empolyee(); 
+	
+	/*************************/
+	
+	//回调calback
+	var scott = "全局变量SCOTT9";
+	var Scott = {
+		scott : "对象变量scott9",
+		showName : function() {
+			console.log(this.scott);
+		},
+		sayName : function() {
+			(function(callback) {
+				callback();
+			})(this.showName)
+		}
+	}
+	//匿名包裹器回调函数的调用者变成了window,匿名函数的执行同样在默认情况下this是指向window的，除非手动改变this的绑定对象       
+	Scott.sayName(); 
+	
+	/*************************/
+	
+	var superoir = "全局变量SUPEROIR10";
+	var Superoir = {
+		superoir : "对象变量superoir10",
+		showName : function() {
+			console.log(this.superoir);
+		},
+		sayName : function() {
+			var that = this;
+			(function(callback) {
+				callback.call(that);//改变callback的指向
+			})(that.showName)
+		}
+	}
+	Superoir.sayName(); 
+	
+	/*************************/
+	
+	// To illustrate the concept of callback
+	var doit = function(callback) {
+		var a = 1, b = 2, c = 3;
+		var t = callback(a, b, c);
+		return t + 10;
+	};
+	var d = doit(function(x, y, z) {
+		return (x + y + z);
+	});
+	console.log("回调函数执行运算结果"+d);
+
+	// 5.Eval函数  该函数执行的时候，this绑定到当前作用域的对象上
+	var endvar = "全局变量ENDVAR";
+	var Endvar = {
+		endvar : "对象变量endvar",
+		showName : function() {
+			eval("console.log(this.endvar)");
+		}
+	}
+
+	Endvar.showName();
+
+	var md = Endvar.showName;
+	md(); 
+</script>
+
+<script type="text/javascript">
+	//递归简略方式返回1+2+...100的值
+	(function(){
+		var i=1;
+		var sum=0;
+		return function(){
+			sum+=i;
+			if(i==100)
+			console.info("1到100的和为"+sum);
+			if(++i<101)
+				arguments.callee();
+		}
+	
+	})()();
+	
+	//交换输出
+	var o=function(x,y){
+		return ( "var a= "+ x+ ";"+ x +" = "+ y +";" + y+ " = a;");
+	}
+	
+	var o1=function(){
+		var f1=function(x){
+			console.log("f1(" +x +")");
+		};
+		var f2=function(x){
+			console.log("f2(" +x +")");
+		};
+		
+		return {
+			c:function(){
+				eval(o("this.f1","this.f2"));
+			},
+			f1:f1,
+			f2:f2
+		}
+	}
+	
+	var o2=new o1();
+	o2.c();
+	o2.f1(1);
+	o2.f2(2);
+	
+</script>
+
+</head>
+<body>
+	<p style="width: 200px">p1</p>
+	<p style="width: 300px">p2</p>
+	<p style="width: 100px">p3</p>
+</body>
+
+<script type="text/javascript">
+	function cg(o,m){
+		return function(e){
+			e=e||window.event;
+			return o[m](this,e);
+		}
+	}
+
+	function g(id){
+		return function(){
+			var e=document.getElementsByTagName(id);
+			
+			if(e){
+				for(var i in e){
+					e[i].onclick=cg(g,"click");
+					e[i].onmouseover=cg(g,"over");
+					e[i].onmouseout=cg(g,"out");
+				
+				}
+			
+			}
+		}
+	}
+	
+	g.over=function(element,event){
+		element.style.backgroundColor='pink';
+	}
+	g.click=function(element,event){
+		element.style.backgroundColor='blue';
+	}
+	g.out=function(element,event){
+		element.style.backgroundColor='yellow';
+	}
+
+	g('p')();
+	
+	//模拟反射实例化对象,f-构造函数 返回f的实例
+	function instanceFrom(f){
+		var a=[].slice.call(arguments,1);
+		f.prototype.constructor=f;
+		f.apply(f.prototype,a);
+		return f.prototype;
+	}
+	
+	function ConFun(){
+		this.name="反射名字";
+	}
+	
+	var obj=instanceFrom(ConFun);
+	console.info(obj.name);
+</script>
+
+</html>

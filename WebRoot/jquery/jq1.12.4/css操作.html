@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>css操作.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+      <style>
+	    .basic {
+	      background-color: pink;
+	      font-size: 32px;
+	      color: red;
+	    }
+	    
+	    .bigger {
+	      font-size: 40px;
+	    }
+  </style>
+    
+    <script type="text/javascript" src="../common/js/jquery-1.12.4.js"></script>
+    <script type="text/javascript">
+    	$(function(){
+    		//设置单个样式.css("名","值")，名要加引号
+    		$('ul:eq(0) li').css("backgroundColor","#CCC")
+    				  .css("fontSize","30px");
+    		//设置多个样式.css({name:'value1',name2:'value2'})	  
+    		$('ul:eq(1) li').css({backgroundColor:"pink",border:"solid 1px black"});
+    		
+    		//获取样式，只会获取迭代元素的第一个样式值
+    		console.info($('ul:eq(1) li').css('border'));
+    		
+    		//添加类样式
+    		$('input:eq(0)').click(function(){
+    			$('ul:eq(2) li').addClass("basic");
+    		})
+    		$('input:eq(1)').click(function(){
+    			$('ul:eq(2) li').addClass("bigger");
+    		})
+    		
+    		//移除类样式
+    		$('input:eq(2)').click(function(){
+    			$('ul:eq(2) li').removeClass("bigger");
+    		})
+    		
+    		//判断类
+    		$('input:eq(3)').click(function(){
+    			console.info($('li').hasClass("bigger"));
+    		})
+    		
+    		//有就移除，没有就添加
+    		$('input:eq(4)').click(function(){
+    			$('ul:eq(2) li').toggleClass("basic");
+    		})
+    		
+    				
+    	})
+    
+    </script>
+
+  </head>
+  
+  <body>
+    <ul>
+	  <li>高圆圆</li>
+	  <li>周二珂</li>
+	  <li>冯提莫</li>
+	  <li>郑爽</li>
+	</ul>
+    <ul>
+	  <li>高崎</li>
+	  <li>名人</li>
+	  <li>盖伊小</li>
+	  <li>郑成功</li>
+	</ul>
+	
+	<input type="button" value="添加basic类" >
+	<input type="button" value="添加bigger类">
+	<input type="button" value="移除bigger类">
+	<input type="button" value="判断bigger类">
+	<input type="button" value="切换类">
+	<ul>
+	  <li class="aa bb cc ">1</li>
+	  <li class="aa bb cc ">2</li>
+	  <li class="aa bb cc ">3</li>
+	  <li class="aa bb cc ">4</li>
+	</ul>
+  </body>
+</html>

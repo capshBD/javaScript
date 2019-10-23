@@ -1,0 +1,25 @@
+[{
+    id: 1,
+    text: 'java',
+    children: [{
+        id: 11,
+        text: 'JavaScript'
+    },{
+        id: 12,
+        text: 'jquery',
+        children:[{
+            id:121,
+            text:'jqueryUI'
+        }]
+    }]
+},{
+    id: 2,
+    text: 'Python',
+    children: [{
+        id: 21,
+        text: 'Python1'
+    },{
+        id: 22,
+        text: 'Python2'
+    }]
+}]

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>3Piece.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+    <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+    <script type="text/javascript">
+    	//预解析，把变量的申明提前
+    	
+    	console.log(data1);//想要输出data1,向后面找有没有data1变量，有把data1申明提前到console.log(data1)之前
+    	var data1=20;
+    	
+    	//函数也会预解析
+    	
+    	f1();
+    	
+    	function f1(){
+    		console.log("this is 预解析函数1");
+    	}
+    	f1();
+    	function f1(){
+    		console.log("this is 预解析函数2");
+    		//函数内的局部变量也会预解析
+    		console.log("data1 "+temp);
+    		var temp=10;
+    	}
+    	f1();
+    	
+    	f2();//想要执行f2(),把f2申明提前到f2()调用之前，还会把里面的变量提前申明。
+    	var data2=30;
+    	function f2(){
+    		console.log("data2 "+data2);
+    	}
+    	
+    	
+    	//局部变量申明提前
+    	var data3=40;
+    	f3();
+    	function f3(){
+    		console.log("data3 "+data3);
+    		var data3=44;
+    	}
+    	
+    	//变量和函数重名的申明提前
+    	console.info(a);//因为有一个变量叫a,有一个函数也叫a，始终会吧函数申明提前
+    	function a(){
+    		alert("aaa");
+    	}
+    	var a=50;
+    	
+    	//隐私全局变量
+    	f4();
+    		console.log(j);
+    		console.log(k);
+    		//console.log(i);i一个被神明为局部变量,外部无法访问
+    	function f4(){
+    		var i=j=k=60;//只有i一个被神明为局部变量，相当于 var i=60;j=60;k=60  ；j,k被神明为隐私全局变量  		
+    		console.log(i);
+    		console.log(j);
+    		console.log(k);
+    	}
+    	
+    	//匿名函数的申明提前，报错
+    	f5();
+    	var f5=function(){
+    		alert("f5");
+    	}
+    		
+    </script>
+    
+    <script type="text/javascript">
+    //不同块不影响
+    	function f1(){
+    		console.log("this is 预解析函数3");
+    	}
+    </script>
+
+  </head>
+  
+  <body>
+  </body>
+</html>

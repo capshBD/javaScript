@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>14Piece.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <script type="text/javascript" src="../logic/common.js"></script>
+    <style type="text/css">
+       
+       li{ list-style: none;}
+    
+    </style>
+    
+    <!--<link rel="stylesheet" type="text/css" href="./styles.css">
+         页面元素直接绑定事件函数（传入事件对象）
+     js代码中为页面元素执行事件函数 注意this指向
+     页面元素调用addEventListener或attachEvent方法添加事件函数
+    -->
+    <script type="text/javascript">
+    	//alert(isIE());
+    	function btn1(){
+    		console.info(this);
+    		//this.style.backgroundColor='red';//this指向的是window,无法设置style
+    	}
+    	function btn2(event){
+    		console.dir(event);//chrome(MouseEvent);firefox(click);IE9(MouseEvent),IE8以及之前（object）
+    		event=event||window.event;
+    		console.dir(event);//chrome(MouseEvent);firefox(click);IE9(MouseEvent),IE8以及之前（object）
+    		var src=event.srcElement?event.srcElement:event.target; //引发事件的事件源对象
+    		console.dir(event.srcElement);//chrome(button);firefox(undefined);IE9(HTMLButtonElement),IE8以及之前（object）
+    		console.dir(event.target);//chrome(button);firefox(button);IE9(HTMLButtonElement),IE8以及之前(undefined)
+    		src.style.background='red';
+    	}
+    </script>
+
+  </head>
+  
+  <body onload="init()">
+  	<button onclick="btn1()">按钮一</button> <!-- 这个函数this指向window -->
+  	<button onclick="btn2(event)">按钮二</button>
+  	<button>按钮三</button>
+  	<button>按钮四</button>
+  	<button onclick="var s=2;f()">按钮五</button><!-- 输出1 不会读取此处的局部变量-->
+  	<button onclick="var s=2;(function(){alert(s);})()">按钮六</button><!-- 输出2 会读取此处的局部变量 -->
+  	
+  	<button class="btn">按钮7</button>
+  	<button class="btn">按钮8</button>
+  	<a href="http://www.baidu.com">百度</a>
+  	<a href="http://localhost:8080/JavaScript/MyJsp.jsp">测试</a>
+  	<p>鼠标事件</p>
+  	<input id="evt" type="text" value="捕获类型"/>
+  	
+  	 <div>
+   			<label>省份:</label><select id="electPro" onchange="chooseCity()">
+   							   <option value="default">--请选择省份--</option>
+   					  </select>
+			&nbsp;&nbsp;<label>城市</label><select id="electCity">
+							   <option value="declare">--请选择城市--</option>
+							  </select>
+   </div>
+   
+  	 <ul>      
+      		<li onclick="Usershow()">用户管理</li>
+      		<li>
+      			<ul id="Show" style="display:none">
+      				<li>添加用户</li>
+      				<li>查询用户</li>
+      				<li>删除用户</li>
+     			
+      			</ul>
+      		
+      		</li>
+      </ul>
+  </body>
+  
+  	<script type="text/javascript">
+  		var btns=document.getElementsByTagName("button");
+  		var b1=btns[2],b2=btns[3];
+  			b1.f=function(){
+  				this.style.backgroundColor='red';
+  			}
+  			//b2.onclick=b1.f; 只能引用函数 里面的this指向b2
+  			b2.onclick=function(){
+  				b1.f(); //b1调用的函数里面的this指向b1
+  			}
+  	//事件获取变量的作用域
+  		var s=1;	
+  	  function f(){
+  	  	alert(s);
+  	  }	
+  	  
+  	 //注册事件	
+  	  if(browserType()!='IE7'&&browserType()!='IE8'){
+	  	  var btnss=document.querySelectorAll('.btn');//IE7及其以下不支持
+	  	  	console.log(btnss);
+	  	  	
+	  	  	for(var i=0;i<btnss.length;i++){
+	  	  		btnss[i].addEventListener('click',function(){//IE8及其以下不支持
+	  	  			console.log(this.innerHTML);
+	  	  		
+	  	  		},true);
+	  	  	}
+  	  	}else{
+  	  		var b6=btns[6],b7=btns[7];
+  	  		b6.attachEvent("onclick",function(){
+  	  			alert(b6.innerHTML);
+  	  		})
+  	  	}
+  	  	
+  	  	//鼠标事件
+  	  	
+  	  	var p=document.getElementsByTagName("p")[0];
+  	  		p.onmouseover=mouseEvt;
+  	  		p.onmouseout=mouseEvt;
+  	  		p.onmousedown=mouseEvt;
+  	  		p.onmouseup=mouseEvt;
+  	  		p.onmousemove=mouseEvt;
+  	  		p.onmousedbclick=mouseEvt;
+  	  	var evt=document.getElementById('evt');
+  	  	function mouseEvt(event){
+  	  		var event=event||window.event;
+  	  		evt.value=event.type;
+  	  	}
+  	</script>
+  	
+  	<script type="text/javascript">
+		var province=['北京市','重庆市','四川省','山东省'];
+		var citys=new Array(4);
+		citys['北京市']=new Array('朝阳区','东城区','西城区','海定区');
+		citys['重庆市']=new Array('江北区','渝北区','北碚区');
+		citys['四川省']=new Array('宜宾市','成都市','雅安市','达州市');
+		citys['山东省']=new Array('济南市','青岛市');
+		
+		function init(){
+			var Pro=document.getElementById('electPro');
+			var op;
+			for(var i=0;i<province.length;i++){
+				op=new Option(province[i],province[i]);
+				Pro.add(op);
+			}
+			
+		}
+		
+		function chooseCity(){
+			var proValue=document.getElementById('electPro').value;
+			var city=document.getElementById('electCity');
+			city.options.length=0;
+			var op;
+			if(proValue=='default'){
+				op=new Option('--请选择城市--','declare');
+				city.add(op);
+			}
+			for ( var j= 0; j < citys[proValue].length; j++) {
+				op=new Option(citys[proValue][j],citys[proValue][j]);
+				city.add(op);
+			}
+		}
+		
+	</script>
+	
+	  <script type="text/javascript">
+    
+        function Usershow(){
+        		
+        	var show = document.getElementById("Show");
+        	if(show.style.display=='none'){
+        	show.style.display="block";
+        	}
+        	else{
+        	show.style.display="none";
+        	}
+        
+        }
+    
+    </script>
+    
+    <script type="text/javascript">
+    
+    function addListener(element,event,listener){
+  		if(element.addEventListener){
+  			element.addEventListener(event,listener,false);
+  		}
+  		else if(element.attachEvent){
+  			element.attachEvent("on"+event,function(){listener.call(element)});
+  		}
+  	}
+	
+    function changeLinksToNewWindow(){
+		var currentDomain=window.location.href.match(/^http:\/\/[^\/]+/)[0];
+		
+		var elements=document.getElementsByTagName("a");
+		for(var i=0;i<elements.length;i++){
+			if (elements[i].href.lastIndexOf(currentDomain)>=0)
+			 addListener(elements[i],'click',openWin);
+		}
+	}
+	
+	function openWin(evt){
+		evt=evt||window.event;
+		window.open(this.href);
+		
+		if(evt.preventDefault)
+			evt.preventDefault();
+		else
+			evt.returnValue=false;
+	}
+	
+	addListener(window,'load',changeLinksToNewWindow);
+    </script>
+</html>

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>15Piece.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+	<style type="text/css">
+		body{
+			padding: 0px;
+			margin: 0px
+		}
+		.ol{
+			text-align: center;
+			font-family: 黑体;
+			font-size: 30px;
+			color:blue
+		}
+		
+	</style>
+	
+	<style type="text/css">
+		#li{
+			text-align: left;
+			font-family: 楷体;
+			font-size: 20px;
+			color:green
+		}
+		
+		.bx{
+			width: 200px;
+			height: 100px;
+			border: solid 1px red;
+			padding: 50px;
+		}
+		#wrap{
+			position: relative;
+			border-width: 20px;
+		}
+	</style>
+	
+	 <link rel="stylesheet" type="text/css" href="styles.css">
+  </head>
+  
+  <body style="background-color:#CCC;">
+  	<!-- js获取样式标签 -->
+  	<div id="div">
+  		<ul>
+  			<li>a</li>
+  			<li>b</li>
+  			<li>
+  				<ul>
+  					<ol class="ol">aa</ol>
+  					<ol id="li">bb</ol>
+  					<ol id="lc">cc</ol>
+  				</ul>
+  			</li>
+  		</ul>
+  	</div>
+  	
+  	<!-- 定位 -->
+  	<div style="width: 200px;height: 200px;border: solid 1px blue;position: static;top: 100px;left: 100px">
+  	元素不会因为top或者left的设置值而发生偏移,因为position=static
+  	</div>
+  	<div style="width: 200px;height: 200px;border: solid 1px red;position:relative;top: 100px;left: 100px">
+  	元素会因为top或者left的设置值而发生相对偏移,因为position=relative
+  	</div>
+  	<div style="width: 200px;height: 200px;border: solid 1px yellow;position:absolute;top: 300px;left: 650px">
+  	元素会因为top或者left的设置值而发生相对于文档的绝对偏移,因为position=absolute
+  	</div>
+  	<div style="width: 200px;height: 200px;border: solid 1px green;position:fixed;top: 400px;left: 400px">
+  	元素会始终在窗口的可视区域内,固定住了
+  	</div>
+  	
+  	<!-- 获取宽度,高度 -->
+  	<div style="width:200px;height: 200px">
+  		<div style="width:50%;height: 50%">
+  			<div style="width:50%;height: 50%">
+  				<div id="div4" style="width:50%;height: 50%">
+  					<div id="div5" style="width:50%;height: 50%;display: none">
+  						睡觉
+  				 </div>
+  				 </div>
+  			</div>
+  		</div>
+  	</div>
+  	 
+  	 <!-- 获取滚动条,clientWidth,offsetWidth -->
+  	<div id="box" style="width: 200px;height: 200px;border: solid 50px pink ;padding: 50px;overflow: auto;">
+  		<div id="info" style="width: 400px;height: 400px;border: solid 1px blue;">盒子模型</div>
+  	</div>
+  	
+  	<!-- 获取距离父元素的长度 -->
+  	<div class="bx" id="wrap">
+  		<div id="sub" class="bx">
+  			<div id="bx" class="bx"></div>
+  		</div>
+  	</div>
+  	
+  	<!-- 显示隐藏 -->
+  	<button>隐藏</button>
+  	<p style="float: right;border: solid 1px red;width: 100px;height: 100px;">p1p1p1</p>
+  </body>
+  
+  	<script type="text/javascript">
+  	/*  
+  		document.styleSheets是一个存放了类型为CSSStyleSheet外部样式表以及内部样式表的数组,存放的顺序为样式引用的顺序,
+  		内部样式表每有一个style标签就算数组的一个SSStyleSheet;
+  		CSSStyleSheet.cssRules||CSSStyleSheet.cssRules存放的是每个样式属性数组
+  	*/
+  		console.log("层叠样式表个数"+document.styleSheets.length);
+		var styleArry=document.styleSheets[1]; //获取第二个CSSStyleSheet
+		console.info(styleArry);
+		console.info(styleArry.type);
+		console.info(styleArry.disabled);
+		console.info(styleArry.media);
+		
+		//获取每个CSSStyleSheet的属性规则数组
+		var cssRules=styleArry.cssRules||styleArry.rules;
+		console.log(cssRules[0].style.color);//获取某个样式的值
+		console.log(cssRules[0].selectorText);//获取选择符如#li
+		cssRules[0].style.color="#999";//设置样式
+		
+		//为CSSStyleSheet添加属性规则
+		if(styleArry.insertRule){
+			//ff或者IE9及其以上
+			styleArry.insertRule("#lc{text-align: center;font-family: 隶书;color:black}",0);
+		}else{
+			//IE8及其以下
+			styleArry.addRule("#lc","text-align: center;font-family: 隶书;color:black",0);
+		}
+		console.log(cssRules[1].style.color);
+		
+		//获取指定元素的样式属性值 e(元素) n(属性名，如color)
+		function getStyle(e,n){
+			if(e.style[n]){
+				return e.style[n];
+				}
+			else if(e.currentStyle){
+				console.info("IE");
+				return e.currentStyle[n];//IE
+				}
+			else if(document.defaultView&&document.defaultView.getComputedStyle){//支持标准dom的
+				console.info("FF OR CHOMRE");
+				n=n.replace(/(A-Z)/g,"-$1");//转换属性名
+				n=n.toLowerCase();
+				var s=document.defaultView.getComputedStyle(e,null);
+				if(s)
+				return s.getPropertyValue(n);
+			}
+			else
+			return null;
+		
+		}
+		var div1=document.getElementsByTagName("div")[0];
+		console.info(getStyle(div1,"width"));
+		
+		//e元素，w元素属性值，通过getStyle函数获取，p当前元素百分比的小数值
+		function fromStyle(e,w,p){
+			var p=arguments[2];
+			if(!p) p=1;
+			//如果是具体的像素，则直接返回
+			if(/px/.test(w)&&parseInt(w)) return parseInt(parseInt(w)*p);
+			else if(/\%/.test(w)&&parseInt(w)){
+				var b=parseInt(w)/100;
+				if((p!=1)&&p) b*=p;
+				e=e.parentNode;
+				if(e.tagName=="BODY") throw new Error("没法计算");
+				w=getStyle(e, "width");
+				return arguments.callee(e,w,b);
+			}
+			else if(/auto/.test(w)){
+				var b=1;
+				if((p!=1)&&p) b*=p;
+				e=e.parentNode;
+				if(e.tagName=="BODY") throw new Error("没法计算");
+				w=getStyle(e, "width");
+				return arguments.callee(e,w,b);
+			}else
+				 throw new Error("没法计算");
+		}
+		
+		var div4=document.getElementById("div4");
+		 var w=getStyle(div4, "width");
+		 w=fromStyle(div4, w);
+		 console.info(w);
+		 
+		 //元素隐藏后宽度,高度为0
+		 var div5=document.getElementById("div5");
+		 console.info(div5.offsetWidth);//元素的width,padding,border，滚动条之和，clientWidth不包含border，滚动条
+		 console.info(div5.offsetHeight);
+		 
+		 /*******/
+		  var info=document.getElementById("info");
+		  var m=0,n=1,s="";
+		  while(m++<19){
+		  	s+=m+" ";
+		  }
+		  s+="<br/>";
+		  
+		  while(n++<21){
+		  	s+=n+"<br/>";
+		  }
+		  info.innerHTML=s;
+		  var box=document.getElementById("box");
+		   console.info(box.offsetHeight);
+		    console.info(box.scrollHeight);
+		     console.info(box.clientHeight);
+		     
+		    /*******/ 
+		   var bx=document.getElementById("bx");    
+		   console.info(bx.offsetLeft);
+		   
+		   //e要隐藏或显示的元素,b是否隐藏(不传就进行切换)
+		  function display(e,b){
+		  	var c=getStyle(e, "display");
+		  	if(typeof b=='undefined'){
+			  	(c!="none")&&(e._display=c);
+			  	e._display=e._display||"";
+			  	if(b||(c=="none"))
+			  		e.style.display=e._display;
+			  	else
+			  		e.style.display="none";
+			  	 return;
+		  		}
+		  	if(b)
+		  		e.style.display='';
+		  	else
+		  		e.style.display="none";	
+		  }
+		  var p=document.getElementsByTagName("p")[0];
+		   var btn=document.getElementsByTagName("button")[0];
+		  	btn.onclick=function(){
+		  		display(p);
+		  		if(btn.innerHTML=='隐藏')
+		  			btn.innerHTML='显示';
+		  		else
+		  			btn.innerHTML='隐藏'
+		  	}
+		  	
+		 function setOpacity(e,n){
+		 	n=parseFloat(n);
+		 	
+		 	if(n&&(n>100)||!n) n=100;
+		 	if(n&&(n<0))n=0;
+		 	if(e.filters)
+		 		e.style.filter="alpha(opacity="+n+")";
+		 	else
+		 		e.style.opacity=n/100;
+		 }
+		 setOpacity(p,80);
+	</script>
+</html>

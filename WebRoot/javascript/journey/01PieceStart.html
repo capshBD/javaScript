@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>JavaScript HelloWorld</title>
+</head>
+<body>
+	<script type="text/javascript">
+		var Box=function(){}
+		/* 	Box.prototype.constructor=Box; 要找Box.constructor属性的时候会去他继承的Function的prototype中去找。即为Function
+			Box.prototype.constructor.constructor相当于Function
+			Box.prototype.constructor.constructor.prototype.make=function(n,f){
+			this.prototype[n]=f;
+		} */
+		
+		console.info(Box);
+	    //给大Function的prototype添加方法 以后所有自定义的function都有make方法
+		Function.prototype.make=function(n,f){
+	        //自定义的function执行此方法时，为自己自定义的function的prototype添加属性
+			this.prototype[n]=f;
+			return this;
+		}
+		
+		Box.make("set",function(x){this.x=x;})
+		   .make("add", function(a,b){return a+b+this.x})
+		Box.make("get",function(){return this.x})
+		
+		var box=new Box();
+		
+		box.set(3);
+		console.info(box.get());
+		console.info(box.add(4,5));
+		
+		console.info(box);
+		console.info(Box);
+		
+		//调用传进来的字符串的method方法
+		function toParamMethod(str,method){
+    		return str[method]();
+   		 }
+    	console.info(window.toParamMethod("HEllo WoRD!","toLowerCase"));
+	</script>
+</body>
+</html>

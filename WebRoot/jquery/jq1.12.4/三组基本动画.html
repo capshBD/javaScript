@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>三组基本动画.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+     <style>
+	    div {
+	      width: 200px;
+	      height: 200px;
+	      background-color: pink;
+	      display: none;
+	    }
+ 	</style>
+     <script type="text/javascript" src="../common/js/jquery-1.12.4.js"></script>
+     	<script type="text/javascript">
+     	$(function(){
+     		//show(speed, [callback])
+      		//speed:动画的持续时间  可以是毫秒值 还可以是固定字符串
+      		//fast:200ms   normal:400ms   slow:600
+      		$('input').eq(0).click(function(){
+      			$('div').eq(0).show(2000,function(){
+      				$(this).html('<p>第一个div显示动画执行完毕</p>')
+      			});
+      		})
+      		$('input').eq(1).click(function(){
+      			$('div').eq(0).hide(2000,function(){
+      			  alert('第一个div隐藏动画执行完毕');
+      			});
+      			
+      		})
+      		
+      		$('input').eq(2).click(function(){
+      			  //slideDown：如果不传参数，有一个默认值normal，滑入（slideDown）
+			      //$("div").slideDown();
+			      //$("div").slideDown(1000);
+      			 $('div').eq(1).slideDown(2000, function () {
+      			   $(this).html('<p>第二个div滑入动画执行完毕</p>')
+      			});
+      		})
+      		$('input').eq(3).click(function(){
+      			 $('div').eq(1).slideUp(2000, function () {
+      			   alert('第二个div滑出动画执行完毕');
+      			});
+      		})
+      		$('input').eq(4).click(function(){
+      			//如果是滑入状态，就执行滑出的动画，
+      			  $('div').eq(1).slideToggle('fast',function(){
+      			    alert('第二个div滑入滑出动画切换完毕');
+      			  });
+      		})
+      		
+      		
+      		$('input').eq(5).click(function(){
+      			  //淡入：fadeIn  淡出：fadeOut    切换：fadeToggle
+      			 $('div').eq(2).fadeIn(2000, function () {
+      			   $(this).html('<p>第三个div淡入动画执行完毕</p>')
+      			});
+      		})
+      		$('input').eq(6).click(function(){
+      			 $('div').eq(2).fadeOut(2000, function () {
+      			   alert('第三个div淡出动画执行完毕');
+      			});
+      		})
+      		$('input').eq(7).click(function(){
+      			//如果是滑入状态，就执行滑出的动画，
+      			  $('div').eq(2).fadeToggle();
+      		})
+     	})
+     	</script>
+
+  </head>
+  
+  <body>
+    <input type="button" value="显示">
+	<input type="button" value="隐藏">
+	
+	<input type="button" value="滑入">
+	<input type="button" value="滑出">
+	<input type="button" value="切换">
+	
+	<input type="button" value="淡入">
+	<input type="button" value="淡出">
+	<input type="button" value="切换">
+	
+	<div></div>
+	<div></div>
+	<div></div>
+  </body>
+</html>

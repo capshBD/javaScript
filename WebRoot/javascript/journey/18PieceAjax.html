@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>18PieceAjax.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+    <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+
+  </head>
+  
+  <body>
+  </body>
+  <script type="text/javascript">
+  	function createXMLHttpObject(){
+  		var XMLHttpFactories=[
+  			function(){return new XMLHttpRequest()},
+  			function(){return new ActiveXObject("Msxml2.XMLHTTP")},
+  			function(){return new ActiveXObject("Msxml3.XMLHTTP")},
+  			function(){return new ActiveXObject("Microsoft.XMLHTTP")}
+  		];
+  		
+  		var XMLHttpObject=null;
+  		
+  		for(var i=0;i<XMLHttpFactories.length;i++){
+  			try {
+				XMLHttpObject=XMLHttpFactories[i]();
+			} catch (e) {
+				console.log(e.message);
+				continue;
+			}
+  			return XMLHttpObject;
+  		}
+  		
+  	}
+  	
+  	function request(url,callback,data){
+  		var xmlHttp=createXMLHttpObject();
+  		if(!xmlHttp)return;
+  		var method=(data)?"POST":"GET";
+  		xmlHttp.open(method,url,true);
+  		xmlHttp.setRequestHeader('User-Agent','XMLHttp/1.0');
+  		
+  		if(data)
+  		xmlHttp.setRequestHeader('Conetent-type','application/x-www-form-urlencoded');
+  		
+  		xmlHttp.onreadystatechange=function(){
+  			if(xmlHttp.readyState!=4)return;
+  			if(xmlHttp.status!=200&&xmlHttp.status!=304){
+  				alert('错误的请求'+xmlHttp.status);
+  				return;
+  			}
+  			callback(xmlHttp);
+  			
+  		}
+  		if(xmlHttp.readyState==4)return;
+  		xmlHttp.send(data);
+  	}
+  	
+  	request("Ajax.jsp", function(xmlHttp){
+  		console.info(xmlHttp.responseText);
+  	}, "id=123&name=xiaoming")
+  </script>
+</html>

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>DecoratorModel.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <script type="text/javascript" src="public.js"></script>
+
+  </head>
+  
+  <body>
+  	<div id="dd"></div>
+  <script type="text/javascript">
+  		var Bicycle=new Interface('Bicycle',['assemble','wash','ride','repair','getPrice']);
+  		
+  		var AcmeComfortCruiser=function(){};
+	  	AcmeComfortCruiser.prototype={
+	  		constructor:AcmeComfortCruiser,
+	  		assemble:function(){
+	  			return "自行车assemble ";
+	  		},
+	  		wash:function(){
+	  		},
+	  		ride:function(){},
+	  		repair:function(){
+	  			console.info("自己维修自行车了");
+	  			return "自己维修";
+	  		},
+	  		getPrice:function(){
+	  			return 100;
+	  		}
+	  	};
+	  	
+	  	//自行车装饰器
+  		var BicycleDecorator=function(bicycle){
+  			Interface.ensureImplements(bicycle,Bicycle);
+  			this.bicycle=bicycle;
+  			this.interface=Bicycle;
+  			outerloop:for(var key in this.bicycle){
+  				if(typeof this.bicycle[key]!=='function')
+  					continue outerloop;
+  				for(var i=0;i<this.interface.methods.length;i++)
+  					if(key===this.interface.methods[i])
+  					 continue outerloop;
+  				var that=this;
+  				(function(methodName){
+  					that[methodName]=function(){
+  						return that.bicycle[methodName]();
+  					}
+  				})(key);
+  			}
+  		};
+  		
+  		BicycleDecorator.prototype={
+  			constructor:BicycleDecorator,
+  			assemble:function(){
+  				return this.bicycle.assemble();
+  			},
+  			wash:function(){
+  				return this.bicycle.wash();
+  			},
+  			ride:function(){
+  				return this.bicycle.ride();
+  			},
+  			repair:function(){
+  				return this.bicycle.repair();
+  			},
+  			getPrice:function(){
+  				return this.bicycle.getPrice();
+  			}
+  		};
+  		
+  		//前灯装饰器
+  		var HeadlightDecorator=function(bicycle){
+  			HeadlightDecorator.superclass.constructor.call(this,bicycle);
+  		};
+  		extend(HeadlightDecorator,BicycleDecorator);
+  		HeadlightDecorator.prototype.assemble=function(){
+  			return this.bicycle.assemble()+' Attach headlight to handlerbars.';
+  		};
+  		HeadlightDecorator.prototype.getPrice=function(){
+  			return this.bicycle.getPrice()+15.00;
+  		};
+  		
+  		//后灯装饰器
+  		var TaillightDecorator=function(bicycle){
+  			TaillightDecorator.superclass.constructor.call(this,bicycle);
+  		};
+  		extend(TaillightDecorator,BicycleDecorator);
+  		TaillightDecorator.prototype.getPrice=function(){
+  			return this.bicycle.getPrice()+5.00;
+  		};
+  		
+  		//装饰前灯后灯
+  		var acmeFtCru=new AcmeComfortCruiser();
+  		acmeFtCru=new HeadlightDecorator(acmeFtCru);
+  		console.info(acmeFtCru.assemble());
+  		console.info(acmeFtCru.getPrice());
+  		
+  		acmeFtCru=new TaillightDecorator(acmeFtCru);
+  		console.info(acmeFtCru.getPrice());
+  		
+  		//维护自行车保修期装饰器
+  		var TimedWarrantyDecorator=function(bicycle,coverageLengthInYears){
+  			TimedWarrantyDecorator.superclass.constructor.call(this,bicycle);
+  			this.coverageLength=coverageLengthInYears;
+  			this.expDate=new Date();
+  			var coverageLengthInMs=this.coverageLength*365*24*60*60*1000;
+  			this.expDate.setTime(this.expDate.getTime()+coverageLengthInMs);
+  		};
+  		extend(TimedWarrantyDecorator, BicycleDecorator);
+  		TimedWarrantyDecorator.prototype.repair=function(){
+  			var repairInstructions;
+  			var currentDate=new Date();
+  			if(currentDate<this.expDate)
+  				repairInstructions="自行车在保修期，请拿去售后维修";
+  			else
+  				repairInstructions=this.bicycle.repair();
+  			return repairInstructions;
+  		};
+  		TimedWarrantyDecorator.prototype.getPrice=function(){
+  			return this.bicycle.getPrice()+(40*this.coverageLength);
+  		};
+  		
+  		acmeFtCru=new TimedWarrantyDecorator(acmeFtCru,2);
+  		console.info(acmeFtCru.repair());
+  		console.info(acmeFtCru.getPrice());
+  		
+  		//自行车颜色装饰器
+  		var FrameColorDecorator=function(bicycle,frameColor){
+  			FrameColorDecorator.superclass.constructor.call(this,bicycle);
+  			this.frameColor=frameColor;
+  		};
+  		extend(FrameColorDecorator, BicycleDecorator);
+  		FrameColorDecorator.prototype.assemble=function(){
+  			return "画颜色"+this.frameColor+this.bicycle.assemble();
+  		};
+  		FrameColorDecorator.prototype.getPrice=function(){
+  			return this.bicycle.getPrice()+20.00;
+  		};
+  		
+  		//添加车铃装饰器
+  		var BellDecorator=function(bicycle){
+  			BellDecorator.superclass.constructor.call(this,bicycle);
+  		};
+  		extend(BellDecorator, BicycleDecorator);
+  		BellDecorator.prototype.assemble=function(){
+  			return this.bicycle.assemble()+'加车铃';
+  		};
+  		BellDecorator.prototype.getPrice=function(){
+  			return this.bicycle.getPrice()+6.00;
+  		};
+  		BellDecorator.prototype.ringBell=function(){
+  			return 'Bell Rung';
+  		};
+  		
+  		acmeFtCru=new BellDecorator(acmeFtCru);
+  		acmeFtCru=new FrameColorDecorator(acmeFtCru,'blue');
+  		console.info(acmeFtCru.getPrice());
+  		console.info(acmeFtCru.assemble());
+  		console.info(acmeFtCru.ringBell());
+  		console.info(acmeFtCru);
+  		
+  		//工厂方法封装
+  		var AcmeBicyCleShop=function(){};
+  		AcmeBicyCleShop.prototype.createBicycle=function(model,options){
+  			var bicycle=new AcmeBicyCleShop.models[model]();
+  			for(var i=0;i<options.length;i++){
+  				var decorator=AcmeBicyCleShop.options[options[i].name];
+  				if(typeof decorator !=='function')
+  					throw new Error('不是函数');
+  				var argument=options[i].arg;
+  				bicycle=new decorator(bicycle,argument);
+  			}
+  			Interface.ensureImplements(bicycle,Bicycle);
+  			return bicycle;
+  		};
+  		
+  		AcmeBicyCleShop.models={
+  			'山地自行车':AcmeComfortCruiser
+  		};
+  		AcmeBicyCleShop.options={
+  			'headlight':HeadlightDecorator,
+  			'taillight':TaillightDecorator,
+  			'bell':BellDecorator,
+  			'color':FrameColorDecorator,
+  			'lifetime':TimedWarrantyDecorator
+  		};
+  		
+  		var aleCursers=new AcmeBicyCleShop();
+  		var myBicycle=aleCursers.createBicycle('山地自行车', [
+  			{name:'color',arg:'red'},
+  			{name:'headlight'},
+  			{name:'taillight'},
+  			{name:'bell'},
+  			{name:'lifetime',arg:2}
+  		]);
+  		
+  		console.info(myBicycle.getPrice());
+  		console.info(myBicycle.assemble());
+  		console.info(myBicycle.ringBell());
+  		console.info(myBicycle.repair());
+  		
+  		/**********/
+  		var ListBuilder=function(parent,length){
+  			this.element=$(parent);
+  			this.length=length;
+  			this.ol=document.createElement('ol');
+  			this.element.appendChild(this.ol);
+  		};
+  		ListBuilder.prototype.addLi=function(){
+  			for(var i=0;i<this.length;i++){
+  				var li=document.createElement('li');
+  					li.innerHTML="li"+i;
+  				this.ol.appendChild(li);
+  			}
+  		};
+  		
+  		var ListCompBuilder=function(compenont){
+  			this.compenont=compenont;
+  		};
+  		ListCompBuilder.prototype.addLi=function(){
+  			var startTime=new Date();
+  			this.compenont.addLi();
+  			var endTime=new Date();
+  			console.info(endTime.getTime()-startTime.getTime());
+  		};
+  		
+  		/* var comp=new ListBuilder('dd',500);
+  		comp=new ListCompBuilder(comp);
+  		comp.addLi(); */
+  		
+  		var MethodProfiler=function(component){
+  			this.component=component;
+  			this.timers={};
+  			
+  			for(var key in this.component){
+  				if(typeof this.component[key]!=='function')
+  					continue;
+  				var that=this;
+  				(function(methodName){
+  					that[methodName]=function(){
+  						var returnValue=that.component[methodName].apply(that.component,arguments);
+  						that.displayTime(methodName,that.getElapsedTime(methodName));
+  						return returnValue;
+  					};
+  				})(key);
+  			}
+  		};
+  		
+  		MethodProfiler.prototype={
+  			constructor:MethodProfiler,
+  			startTimer:function(methodName){
+  				this.timers[methodName]=new Date().getTime();
+  			},
+  			getElapsedTime:function(methodName){
+  				return new Date().getTime()-this.timers[methodName];
+  			},
+  			displayTime:function(methodName,time){
+  				console.log(methodName+":"+time+"毫秒");
+  			}
+  		};
+  		
+  		var cp=new ListBuilder('dd',1500);
+  		cp=new MethodProfiler(cp);
+  		cp.startTimer('addLi');
+  		cp.addLi();
+  </script>
+  </body>
+</html>

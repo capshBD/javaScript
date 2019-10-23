@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>easyUIComboGrid.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+    <link rel="stylesheet" type="text/css" href="../easyUI/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="../easyUI/themes/default/easyui.css">
+    <script type="text/javascript" src="../easyUI/jquery.min.js"></script>
+    <script type="text/javascript" src="../easyUI/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../easyUI/locale/easyui-lang-zh_CN.js"></script>
+
+  </head>
+  
+  <body>
+    <div class="easyui-panel" style="width:100%;max-width:400px;padding:30px 60px;">
+    <div style="margin-bottom:20px">
+    	<select style="width:100%">
+    		
+    	</select>
+    </div>
+    </div>
+    <script type="text/javascript">
+    	$('select').combogrid({
+    				panelWidth: 500,
+					multiple: true,
+					idField: 'itemid',
+					textField: 'productname',
+					url: 'datagrid_data1.json',
+					method: 'get',
+					value: ['EST-11','EST-13'],
+					columns: [[
+						{field:'itemid',title:'Item ID',width:80},
+						{field:'productname',title:'Product',width:120},
+						{field:'listprice',title:'List Price',width:80,align:'right'},
+						{field:'unitcost',title:'Unit Cost',width:80,align:'right'},
+						{field:'attr1',title:'Attribute',width:200},
+						{field:'status',title:'Status',width:60,align:'center'}
+					]],
+					fitColumns: true,
+					label: 'Select Items:',
+					labelPosition: 'top'
+    				
+    	})
+    </script>
+  </body>
+</html>

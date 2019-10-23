@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>21PieceDynamicProgram.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+    <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+    
+    <script type="text/javascript">
+    	(function (window,undefined){
+    		var myQuery=function( selector, context ) {
+				return new myQuery.fn.init( selector, context );
+			};
+			
+			myQuery.fn=myQuery.prototype={
+				constructor:myQuery,
+				init:function(selector, context){
+					if(!selector){
+					 return null;
+					 }else{
+					  this.el=document.getElementsByTagName(selector);
+					  
+					 }
+				},
+				each:function(){
+					for(var i in this.el){
+						console.info(this.el[i].innerHTML);
+					}
+				}
+			};
+			myQuery.fn.init.prototype=myQuery.fn;
+			myQuery.fn.init.prototype.constructor=myQuery.fn.init;
+			myQuery.extend=myQuery.fn.extend=function(object){
+				for(var  i in object){
+					if(object.hasOwnProperty(i))
+					this[i]= object[i];
+				}
+			};
+			
+			window.myQuery=window.$_$=myQuery;
+    	
+    	})(window);
+    
+    </script>
+	<script type="text/javascript">
+		var s="1+2;";
+		console.info(eval(s));
+		
+		var n=1;
+		function f(){
+			var n=2;
+			if(window.execScript)//始终为全局域 
+				window.execScript("n=3;");//给全局的n赋值
+			else
+				window.eval("n=3;");
+			console.info("inner"+n);
+		}
+		
+		f();
+		console.info("outer"+n);
+		
+		window.onload=function(){
+		
+		function Myfunc(){
+			var temp="temp";
+			this.name='xiaoming';
+			this.age=12;
+			this.eat=function(){
+				console.info(this.age+temp);
+			}
+		}
+			var myO=$_$('div');
+			myO.each();
+			myO.extend(new Myfunc());
+			console.info(myO.name);
+			myO.eat();
+		}
+		
+		
+	</script>
+  </head>
+  
+  <body>
+  	<div id="div1">ppppp</div>
+  	<div id="div2">fffff</div>
+  </body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>13Piece.html</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <style type="text/css">
+    	.box{background-color: #CCC}
+    </style>
+	<script type="text/javascript">
+		window.onload=function(){
+			cleanBlank();
+			console.info("文档中的总结点数"+count(document));
+			var d=document.getElementById("ul");
+			console.info("是否有子节点"+d.hasChildNodes());
+			console.info("子节点的个数"+d.childNodes.length);
+			console.info("子元素节点个数"+d.children.length);
+			console.info("第一个子节点类型"+d.firstChild.nodeType);
+			console.info("最后一个子节点"+d.lastChild);
+			console.info(d.childNodes[1].nodeType+"|"+d.childNodes[1].nodeName+"|"+d.childNodes[1].nodeValue);
+			console.info(d);
+			
+		//document.documentElement就是html标签
+		console.info(document.documentElement.children[1]==document.body);
+		
+		document.getElementById("red").setAttribute("class", "box");
+		
+		var text=document.createTextNode("文本节点");
+		
+		document.getElementById("label1").appendChild(text);
+	};
+	
+	//清除文档中的空格
+	function cleanBlank(e){
+		var e=e||document.body;
+		var f=e.firstChild;
+	
+		while(f!=null){
+			if((f.nodeType==3&&/\s*/.test(f.nodeValue))){
+				console.info(f.nodeValue);
+				e.removeChild(f);
+			}
+			else if(f.nodeType==1)
+				arguments.callee(f);//递归
+			f=f.nextSibling;
+		}
+	}
+	
+	//统计文档中的节点个数<script>标签也算
+	function count(e){
+		var num=0;
+		if(e.nodeType==1)
+		num++;
+		
+		var childNodes=e.childNodes;
+		for(var i=0;i<childNodes.length;i++)
+			num+=count(childNodes[i]);
+			
+			return num;
+	}
+	
+	</script>
+	<script type="text/javascript"></script>
+  </head>
+  
+  <body>
+  	<ul id="ul">
+  		文本<li class="a">列支出1</li>
+  		<li>列支出2</li>
+  		<li>列支出3</li>
+  	</ul>
+  	
+  	<h1>标准DOM</h1>
+  	<p>simple<strong>object dom model</strong></p>
+  	
+  	<div id="red">红盒子</div>
+  	<div id="blue">蓝盒子</div>
+  	<label id="label1">
+  		<input type="text" name="username"/>
+  	</label>
+  	 <input type="button" value="后退" onclick="javascript:history.go(-1)" />
+  </body>
+</html>

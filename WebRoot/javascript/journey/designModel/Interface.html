@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Interface.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <script type="text/javascript" src="public.js"></script>
+
+  </head>
+  
+  <body>
+  <script type="text/javascript">
+  	
+  	//实例化需要被实现的接口类实例
+   var composite=new Interface('Composite',['add','remove','getChild']);
+   var formItem=new Interface('FormItem',['save']);
+   
+   var CompositeForm=function(id,method,action){
+   	this.id=id;
+   	this.method=method;
+   	this.action=action;
+   }
+   CompositeForm.prototype={
+   	constructor:CompositeForm,
+   	add:function(num1,num2){
+   		return num1+num2;
+   	},
+   	remove:function(user){
+   		this.action=null;
+   	},
+   	getChild:function(){
+   		return this.method;
+   	},
+   	save:function(){
+   		this.id=this.id;
+   	}
+   }
+    var inst=new CompositeForm(1,'method','action');
+    addForm(inst);
+   
+   function addForm(formInstance){
+   	Interface.ensureImplements(formInstance, composite,formItem);
+   } 	
+   
+   console.info(inst.add(2, 3));
+   console.info(inst.action);
+   inst.remove();
+   console.info(inst.action);
+  </script>
+  </body>
+</html>

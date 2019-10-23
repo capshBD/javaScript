@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>隔行变色.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+     <style>
+    </style>
+    
+	<script type="text/javascript" src="../common/js/jquery-1.12.4.js"></script>
+	<script type="text/javascript" src="../common/js/common.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			var lis=$('li');
+			lis.each(function(i,item){
+				if(i%2==0)
+				this.style.backgroundColor="green";
+				else
+				this.style.backgroundColor="pink";
+			})
+			
+		})
+	</script>
+  </head>
+  
+  <body>
+  	<ul>
+  <li>我是第1个li</li>
+  <li>我是第2个li</li>
+  <li>我是第3个li</li>
+  <li>我是第4个li</li>
+  <li>我是第5个li</li>
+  <li>我是第6个li</li>
+  <li>我是第7个li</li>
+  <li>我是第8个li</li>
+  <li>我是第9个li</li>
+  <li>我是第10个li</li>
+	</ul>
+  
+  </body>
+</html>

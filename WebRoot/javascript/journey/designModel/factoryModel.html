@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>factoryModel.html</title>
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <script type="text/javascript" src="public.js"></script>
+  </head>
+  
+  <body>
+  <script type="text/javascript">
+  	//简单工厂模式
+  	var Bicycle=new Interface('Bicycle',['assemble','wash','ride','repair']);
+  	
+  	var BicycleFactory={
+  		createBicycle:function(model){
+  			var bicycle;
+  			switch(model){
+  				case 'The Speedster':
+  				bicycle=new Speedster();
+  				break;
+  				case 'The Lowrider':
+  				bicycle=new Lowrider();
+  				break;
+  				case 'The Comfort':
+  				bicycle=new Comfort();
+  				break;
+  				default:
+  				bicycle=new MickeDk();
+  				break;
+  			}
+  			Interface.ensureImplements(bicycle,Bicycle);
+  			return bicycle;
+  		}
+  	};
+  	
+  	var Speedster=function(){};
+  	Speedster.prototype={
+  		constructor:Speedster,
+  		assemble:function(){},
+  		wash:function(){
+  			console.info('wash');
+  		},
+  		ride:function(){},
+  		repair:function(){}
+  	};
+  	
+  	var BicycleShop=function(){};
+  	BicycleShop.prototype={
+  		constructor:BicycleShop,
+  		sellBicycle:function(model){
+  			var bicycle=BicycleFactory.createBicycle(model);
+  			bicycle.assemble();
+  			bicycle.wash();
+  			return bicycle;
+  		}
+  	}
+  	
+  	var californiaCruisers=new BicycleShop();
+  	californiaCruisers.sellBicycle('The Speedster');
+  	
+  	/********/
+  	
+  	var ajaxHandler=new Interface('ajaxHandler',['request','createXhrObject']);
+  	
+  	var SimpleHandler=function(){};
+  	SimpleHandler.prototype={
+  		constructor:SimpleHandler,
+  		request:function(method,url,callback,postVars){
+  			var xhr=this.createXhrObject();
+  			xhr.onreadystatechange=function(){
+  				if(xhr.readyState!=4)return;
+  				(xhr.status===200)?
+  					callback.success(xhr.responseText,xhr.responseXML):
+  					callback.failure(xhr.status);
+  			};
+  			xhr.open(method,url,true);
+  			if(method!=='POST') postVars=null;
+  			xhr.send(postVars);
+  		},
+  		createXhrObject:function(){
+  			var methods=[
+  				function(){return new XMLHttpRequest();},
+  				function(){return new ActiveXObject('Msxml2.XMLHTTP');},
+  				function(){return new ActiveXObject('Microsoft.XMLHTTP');}
+  			];
+  			var xhr=null;
+  			for(var i=0;i<methods.length;i++){
+  				try{
+  					xhr=methods[i]();
+  				}catch(e){
+  					continue;
+  				}
+  				this.createXhrObject=methods[i];
+  				return xhr;
+  			}
+  			throw new Error('无法实例化xhr');
+  		}
+  	}
+  	
+  	var QueuedHandler=function(){
+  		this.queue=[];
+  		this.requestInProgress=false;
+  		this.retryDelay=5;
+  	};
+  	extend(QueuedHandler,SimpleHandler);
+  	QueuedHandler.prototype.request=function(method,url,callback,postVars,override){
+  		if(this.requestInProgress&&!override){
+  			this.queue.push({
+  				method:method,
+  				url:url,
+  				callback:callback,
+  				postVars:postVars
+  			});
+  		}else{
+  			this.requestInProgress=true;
+  			var xhr=this.createXhrObject();
+  			var that=this;
+  			xhr.onreadystatechange=function(){
+  				if(xhr.readyState!==4)return;
+  				if(xhr.status===200){
+  					callback.success(xhr.responseText,xhr.responseXML);
+  					that.advanceQueue();
+  				}else{
+  					callback.failure(xhr.status);
+  					setTimeout(function(){that.request(method,url,callback,postVars,true);},that.retryDelay*1000);
+  				}
+  			};
+  			xhr.open(method,url,true);
+  			if(method!=='POST') postVars=null;
+  			xhr.send(postVars);
+  		}
+  	};
+  	
+  	QueuedHandler.prototype.advanceQueue=function(){
+  		if(this.queue.length==0){
+  			this.requestInProgress=false;
+  			return;
+  		}
+  		
+  		var req=this.queue.shift();
+  		this.request(req.method,req.url,req.callback,req.postVars,true);
+  	}
+  	
+  	/***************/
+  	var OfflineHandler=function(){
+  		this.storeRequests=[];
+  	};
+  	extend(OfflineHandler, SimpleHandler);
+  	OfflineHandler.prototype.request=function(method,url,callback,postVars){
+  		if(XhrManager.isOffline()){
+  			this.storeRequests.push({
+  				method:method,
+  				url:url,
+  				callback:callback,
+  				postVars:postVars
+  			});
+  			console.info(this.storeRequests.length);
+  		}else{
+  			this.flushStoreRequests();
+  			OfflineHandler.superclass.request(method,url,callback,postVars);
+  		}
+  	};
+  	OfflineHandler.prototype.flushStoreRequests=function(){
+  		var len=this.storeRequests.length;
+  		for(var i=0;i<len;i++){
+  			var requestObj=this.storeRequests.shift();
+  		OfflineHandler.superclass.request(requestObj.method,requestObj.url,requestObj.callback,requestObj.postVars);
+  		}
+  	};
+  	
+  	/*********工厂********/
+  	var XhrManager={
+  		createXhrHandler:function(){
+  			var xhr;
+  			if(this.isOffline)
+  			xhr=new OfflineHandler();
+  			else if(this.isQueue())
+  			xhr=new QueuedHandler();
+  			else
+  			xhr=new SimpleHandler();
+  			Interface.ensureImplements(xhr,ajaxHandler);
+  			return xhr;
+  		},
+  		isOffline:function(){
+  			return Math.random()>0.5?true:false;
+  		},
+  		isQueue:function(){
+  			return false;
+  		}
+  	};
+  	
+  	var callback={
+  		success:function(responseText){console.info('success:'+responseText);},
+  		failure:function(statusCode){console.info('failure:'+statusCode);}
+  	};
+  	
+  	var requesTest=XhrManager.createXhrHandler();
+  
+  	requesTest.request('GET', '/JavaScript/Ajax/sample2.jsp?playPos=pos2', callback, null, null);
+  	requesTest.request('GET', '/JavaScript/Ajax/sample.jsp?username=admin', callback, null, null);
+  	requesTest.request('GET', '/JavaScript/Ajax/sample2.jsp?playPos=pos1', callback, null, null);
+  	requesTest.request('GET', '/JavaScript/Ajax/sample.jsp?username=kangkang', callback, null, null);
+  	requesTest.request('GET', '/JavaScript/Ajax/sample2.jsp?playPos=john', callback, null, null);
+  	requesTest.request('GET', '/JavaScript/Ajax/sample.jsp?username=liwmen', callback, null, null);
+  	requesTest.request('GET', '/JavaScript/Ajax/sample2.jsp?playPos=tomcat', callback, null, null);
+
+  </script>
+  </body>
+</html>

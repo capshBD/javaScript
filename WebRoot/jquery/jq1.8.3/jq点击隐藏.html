@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ch01.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+    <style type="text/css">
+      #show{
+		width:150px;
+		height:180x;
+		border:1px #ccc solid;
+	}
+     .myli{
+     	font-size:14px;
+     	font-weight:bold;
+     }
+     ul{
+		display:none;
+	}
+    </style>
+    
+	<script src="jquery-1.8.3.js" type="text/javascript"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			console.info($('h2'));
+			console.info($('ul'));
+			console.info($('li'));
+			console.info($('.first'));
+			$('h2').click(function(){
+				$('ul').css({'display':'block','line-height':'20px'});
+				$('.first').css({'background-color':'blue','color':'#fff'}).next('li').css('font-size','18px');
+				$('li').addClass('myli');
+			})
+		})
+	</script>
+  </head>
+  
+  <body>
+  		<div id="show">
+  			<h2>新手指南</h2>
+  			<ul>
+  				<li class="first">会员注册</li>
+  				<li>订阅更新</li>
+				<li>用户协议</li>
+				<li>常见问题</li>
+  			</ul>
+  		</div>
+  </body>
+</html>

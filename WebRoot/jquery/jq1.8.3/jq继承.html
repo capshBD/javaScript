@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>jq继承.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+    <script type="text/javascript" src="jquery-1.8.3.js"></script>
+	<script type="text/javascript">
+		function Foo(){
+			console.log(this);
+		}
+		Foo.value="foo";
+		Foo.say=function(text){
+		    console.log(this);
+			console.log("text"+text);
+		}
+		Foo.say.ff=function(obj){
+		    console.log(this);
+		}
+		//添加一个扩展函数本身属性的继承函数
+		Foo.extend=function(o){
+			for(var i in o)
+				if(o.hasOwnProperty(i))
+				this[i]=o[i];
+		}
+		
+		Foo.fn=Foo.prototype={
+			constructor:Foo,
+			name:'二哈',
+			eat:function(food){
+				console.info(this.name+"吃"+food);
+			},
+			//添加一个扩展函数的实例对象属性的继承函数
+			extend:function(o){
+				for(var i in o)
+				 if(o.hasOwnProperty(i))
+					this[i]=o[i];
+			}
+		}
+		
+		Foo();
+		Foo.call(Foo);
+		Foo.say("hello");
+		Foo.say.ff('http');
+		Foo.extend({
+			value:"校花",
+			dosome:function(){
+				console.info(this.value);
+			}
+		});
+		console.log(Foo);
+		Foo.dosome();
+		
+		var obj=new Foo();
+		obj.eat('斧头');
+		
+		//是原型对象在调用方法为原型对象添加属性或方法,所以构造函数的实例也有了这个方法
+		Foo.fn.extend({
+			eatsome:function(food){
+				this.eat(food);
+			},
+			type:"dog"
+		});
+		obj.eatsome('骨头');
+		console.info(obj.type);
+		console.info(obj);
+	</script>
+  </head>
+  
+  <body>
+  </body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>methodChainCall.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+  </head>
+  
+  <body>
+  	<div id="div1">div1</div>
+  	<div id="div2">div2</div>
+  	<script type="text/javascript">
+  		(function(window){
+  			function _$(els){
+  				this.elements=[];
+  				
+  				for(var i=0;i<els.length;i++){
+  					var element=els[i];
+  					if(typeof element=='string')
+  						element=document.getElementById(element);
+  					this.elements.push(element);
+  				}
+  			}
+  			
+  			_$.prototype={
+  				constructor:_$,
+  				each:function(fn){
+  					for(var i=0;i<this.elements.length;i++)
+  					fn.call(this,this.elements[i]);
+  					return this;
+  				},
+  				setStyle:function(prop,val){
+  					this.each(function(el){
+  						el['style'][prop]=val;
+  					});
+  					return this;
+  				},
+  				show:function(){
+  					var that=this;
+  					this.each(function(el){
+  					console.info(el);
+  						if(el['style']['display']!='none')
+  						that.setStyle('display', 'none');
+  						else
+  						that.setStyle('display', 'block');
+  					});
+  					return this;
+  				},
+  				addEvent:function(type,fn){
+  					var add=function(el){
+  						if(window.addEventListener)
+  						el.addEventListener(type,fn,false);
+  						else if(window.attachEvent)
+  						el.attachEvent('on'+type,fn);
+  					  };
+  						this.each(function(el){
+  							add(el);
+  						});
+  						return this;
+  					}
+  				}
+  			
+  			/* window.$=function(){
+  				return new _$(arguments);
+  			} */
+  			window.installHelper=function(scope,interface){
+  				scope[interface]=function(){
+  					return new _$(arguments);
+  				}
+  			}
+  		})(window);
+  		
+  		installHelper(window,'$');
+  		
+  		$(window).addEvent('load',function(){
+  			$('div1','div2').show()
+  			.setStyle('color','red')
+  			.addEvent('click',function(e){
+  				$(this).setStyle('color','green');
+  			})
+  		
+  		})
+  	</script>
+  </body>
+</html>

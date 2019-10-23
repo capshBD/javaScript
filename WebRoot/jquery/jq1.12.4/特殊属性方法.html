@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>特殊属性方法.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+     <script type="text/javascript" src="../common/js/jquery-1.12.4.js"></script>
+     <script type="text/javascript">
+     	$(function(){
+     		//val()方法获取以及改变元素的value属性值
+     		console.info($('input').eq(0).val());
+     		$('input').eq(0).val("按钮二")
+     		
+     		$('input').eq(1).focus(function(){
+	     		if($(this).val()=='洋酒')
+	     			$(this).val('');
+     		})
+     		$('input').eq(1).blur(function(){
+     			if($(this).val().trim().length==0)
+     			$(this).val('洋酒');
+     		})
+     		
+     		//html(),text()方法获取，改变标签里面的内容
+     		console.info($('p').html());
+     		console.info($('p').text());
+     		$('p').html("<span>内容2</span>")
+     		$('p').text("<span>内容3</span>")
+     	})
+     
+     </script>
+
+  </head>
+  
+  <body>
+    	<input type="button" value="按钮"><br/>
+    	<input type="text" value="洋酒">
+    	<p><span>内容</span></p>
+  </body>
+</html>

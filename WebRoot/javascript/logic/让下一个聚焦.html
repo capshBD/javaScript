@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>让下一个聚焦.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+    <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+
+  </head>
+  
+  <body>
+  <input type="text"><br>
+  <input id="t" type="text"><br>
+  <input type="text"><br>
+  <input type="text"><br>
+  <input type="text"><br>
+  <input type="text"><br>
+  <input type="text"><br>
+  <input type="text"><br>
+  <input type="text"><br>
+  </body>
+  	<script type="text/javascript">
+  		var texts= document.querySelectorAll('input[type=text]');
+  		
+  		for(var i=0;i<texts.length;i++){
+  			var text=texts[i];
+  			text.onkeydown=function(e){
+  				e=e||window.event;
+  				if(e.keyCode === 13){
+  					 var nextElement =this.nextElementSibling.nextElementSibling;
+  					 console.log(nextElement);
+  					   if (nextElement) {
+				          nextElement.focus();
+				        }
+  				}
+  			}
+  		
+  		}
+  	
+  	</script>
+</html>

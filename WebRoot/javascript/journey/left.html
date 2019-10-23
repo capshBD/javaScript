@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>left.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+	<style type="text/css">
+		.instr{font-family: "黑体" }
+		.he{font-size: 50px}
+		.hh{font-size:5px }
+	</style>
+  </head>
+  
+    <body onload="dom()">
+  	this is body 
+  	<div id='mn'>
+  		<p class="instr">welcome to dom</p>
+  		this is div1
+  		<p id='ho'> helo</p>
+  		this is div2
+  	</div>
+  	<div id='footer'>
+  		Copyright 2008
+  	</div>
+  	<a href="www.baidu.com" id="hf" class="he">超链接</a>
+  	<b id="bd" style="font-size: 10px"></b>
+  </body>
+  
+    <script type="text/javascript">
+    	function left(){
+    		alert("left");
+    	}
+    	
+    	 function dom(){
+	 	//改变节点style属性的样式
+		var mainContent=document.getElementById("mn");
+		mainContent.style.backgroundColor='blue';
+		
+		var paratags=document.getElementsByTagName('p');
+		for(i=0;i<paratags.length;i++)
+		paratags[i].style.fontSize='4em';
+		
+		//获取body节点的子节点
+		var elements=document.getElementsByTagName("body")[0].childNodes;
+		for(j=0;j<elements.length;j++)
+		
+		if(getElement(elements[j]))
+		console.info(elements[j].id);
+		
+		//获取a标签的属性
+		var url=document.getElementById('hf');
+		var href=url.getAttribute("href");
+		var hf=url.href;
+		console.info(href+"|"+hf+"|"+url.className);
+		url.setAttribute("href", "www.sina.com");
+		url.className='hh';
+		}
+		
+		function getElement(node){
+			while(node.nodeType!=1)
+				return false;
+				
+				return true;
+		}
+		
+		/* 
+		node.childNodes获取所有子节点 ;node.children获取所有元素节点
+		node.parentNode获取直接父节点
+		node.nextSibling/previousSibling获取前一个/后一个同辈节点
+		node.firstChild/lastChild获取第一个/最后一个子节点
+		 */
+    </script>
+
+</html>

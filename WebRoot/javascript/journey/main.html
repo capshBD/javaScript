@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>left.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+    <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+
+  </head>
+  
+  <body>
+  <script type="text/javascript">
+  //根据类名获取元素  链接标签点击根据返回值执行动作 标签元素鼠标事件修改属性
+		function getElementByClassName(node,classname){
+			var a=[];
+			var re=new RegExp('(^| )'+classname+'( |$)');
+			var els=node.getElementsByTagName("*");
+			
+			for(i=0;i<els.length;i++)
+			if(re.test(els[i].className)) a.push(els[i]);
+			
+			return a;
+		}
+		
+		function test(){
+			var div=document.getElementById('div');
+			var ells=getElementByClassName(div,'te');
+			for(j=0;j<ells.length;j++)
+			console.info(ells[j].innerHTML);
+		}
+		
+		function check(){
+			return false;
+		}
+		
+		window.onload=function(){
+			var img=document.getElementById('img');
+		  	img.onmouseover=function(){
+		  		this.oldsrc=this.src;
+		  		this.src="home.png";
+		  	}
+		  	
+		  	img.onmouseout=function(){
+		  	  this.src=this.oldsrc;
+  			}
+  			
+  			document.getElementById("btn").onclick=function(){
+  			parent.frames[0].left();//调用的是其他frame里面的方法，chome浏览器有问题
+  		}
+	}
+  </script>
+    <button id="btn">点我</button>
+    <div>
+  		<ul class="tb">
+  			<li class="te" onclick="test()">aa1</li>
+  			<li class="tb">aa2</li>
+  		</ul>
+  	</div>
+  	<div id="div" class="te">
+  		<a class="te">bb</a>
+  		<a class="tb">cc</a>
+  		<p class="te">ppp
+  			<b class='te'>bbe</b>
+  			<b class='tb'>bbb</b>
+  			<a href="http://www.baidu.com" onclick="return check()">百度</a>
+  			<a href="javascript:check()">新浪</a>
+  			<a href="http://www.sofu.com" onclick="window.open(this.href);return true;">搜狐</a>
+  		</p>
+  		<img src="banner_bg.gif" id="img"/>
+  	</div>
+  </body>
+</html>

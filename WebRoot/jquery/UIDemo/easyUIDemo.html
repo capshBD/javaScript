@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>easyUIDemo.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+    <link rel="stylesheet" type="text/css" href="../easyUI/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="../easyUI/themes/default/easyui.css">
+    <script type="text/javascript" src="../easyUI/jquery.min.js"></script>
+    <script type="text/javascript" src="../easyUI/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../easyUI/locale/easyui-lang-zh_CN.js"></script>
+	<script type="text/javascript">
+		$.extend($.fn.dialog.methods, {    
+		    mymove: function(jq, newposition){    
+		        return jq.each(function(){    
+		            $(this).dialog('move', newposition);    
+		        });    
+		    }    
+		});
+		
+		$(function(){
+			console.log($.parser.auto);
+			$.parser.parse({
+				onComplete:function(){
+					alert("行啊");
+				}
+			})
+			 $('#ff').dialog({
+				    title: 'My Dialog',    
+				    width: 400,    
+				    height: 200,    
+				    closed: false,    
+				    cache: false,
+				    modal: true  
+					});
+			$('#ff').dialog('mymove', {    
+			    left: 600,    
+			    top: 600    
+			}); 
+		
+			$('#dd').draggable({
+				 handle:'#title',
+				 proxy:function(){
+				 	return $('#title');
+				 },
+				 onStopDrag:function(e){
+				 }
+			});
+			console.info($('#dd'));
+			
+			$('#pp').pagination({
+				total:2000,
+				pagzSize:10,
+				buttons:[{ 
+						iconCls:'icon-save',
+						handler:function(){
+							console.info("分页大师")
+						  }
+					   }
+					]
+				
+			});
+			
+		
+		$('#ss').searchbox({
+				width : 200,
+				searcher : function(value, name) {
+					alert(value + "," + name)
+
+				},
+				menu : '#mm',
+				prompt : 'Please Input Value'
+			});
+		
+		var timerId=setInterval(function(){
+			var value=$('#p').progressbar('getValue');   
+			if(value<100){
+				 value += Math.floor(5);   
+				 $('#p').progressbar('setValue', value);   
+			}else
+				clearInterval(timerId);
+		}, 1000);
+		
+		$('#pan').panel({
+			width:500,
+			height:150,  
+			title: 'My Panel', 
+			collapsible:true,
+			minimizable:true,
+			maximizable:true,
+			closable:true,
+			tools: [{   
+		     iconCls:'icon-add',   
+		     handler:function(){alert('new')}   
+		   },{   
+		     iconCls:'icon-save',  
+		     handler:function(){
+		     }   
+		   }],
+		   onDestroy:function(){
+		   	alert("panel 销毁");
+		   }
+		   
+		});
+		$('#pan').panel('destroy',false);
+		
+
+		$('#cc').tooltip({
+							position : 'right',
+							content : '<span style="color:#fff">This is the tooltip message.</span>',
+							onShow : function() {
+								$(this).tooltip('tip').css({
+									backgroundColor : '#666',
+									borderColor : '#666'
+								});
+							  }
+							});
+
+		})
+	</script>
+  </head>
+
+<body>
+	<div id="dd" style="width:200px;height:200px;">
+		<div id="title" style="background:#ccc;">title</div>
+	</div>
+	<div id="pp" style="width:500px;height:100px;background:#CCC;">pp</div>
+	
+	<input id="ss"></input>
+	<div id="mm" style="width:120px">
+		<div name="all" iconCls="icon-ok">All News</div>
+		<div name="sports">Sports News</div>
+	</div>
+	
+	<div id="p" class="easyui-progressbar" style="width:400px;"></div>
+	<div id="pan" style="padding:10px;">
+
+		<p>panel content.</p>
+
+		<p>panel content.</p>
+
+	</div>
+	<a id="cc" href="javascript:void(0)">Click here</a>
+	<a id="ff" href="javascript:void(0)">dialog</a>
+	<a id="gg" href="javascript:void(0)">gg</a>
+</body>
+</html>

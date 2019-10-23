@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>表格全选.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+     <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+    
+    .wrap {
+      width: 300px;
+      margin: 100px auto 0;
+    }
+    
+    table {
+      border-collapse: collapse;
+      border-spacing: 0;
+      border: 1px solid #c0c0c0;
+      width: 300px;
+    }
+    
+    th,
+    td {
+      border: 1px solid #d0d0d0;
+      color: #404060;
+      padding: 10px;
+    }
+    
+    th {
+      background-color: #09c;
+      font: bold 16px "微软雅黑";
+      color: #fff;
+    }
+    
+    td {
+      font: 14px "微软雅黑";
+    }
+    
+    tbody tr {
+      background-color: #f0f0f0;
+      text-align: center;
+    }
+    
+    tbody tr:hover {
+      cursor: pointer;
+      background-color: #fafafa;
+    }
+  </style>
+  <script type="text/javascript" src="../common/js/jquery-1.12.4.js"></script>
+  <script type="text/javascript">
+  		/* $(function(){
+  		$('#j_cbAll').click(function(){
+  			$('#j_tb input').prop("checked",this.checked);// $(this).prop("checked")
+  		})
+  		
+  		$('#j_tb input').click(function(){
+  			var len=$('#j_tb input:checked').length;
+  			if(len==$('#j_tb input').length)
+  				$('#j_cbAll').prop("checked",true);
+  			else
+  				$('#j_cbAll').prop("checked",false);
+  		})
+  		
+  		$('#btn').click(function(){
+  			var checks=$('#j_tb input');
+  			$.each(checks,function(i,item){
+  				$(item).prop("checked",!$(item).prop("checked"));
+  			});
+  			var len=$('#j_tb input:checked').length;
+  			if(len==checks.length)
+  				$('#j_cbAll').prop("checked",true);
+  			else
+  				$('#j_cbAll').prop("checked",false);
+  		})
+  	}); */
+  	
+  </script>
+
+  </head>
+  
+  <body>
+    <div class="wrap">
+	  <table>
+	    <thead>
+	    <tr>
+	      <th>
+	        <input type="checkbox" id="j_cbAll"/>
+	      </th>
+	      <th>菜名</th>
+	      <th>饭店</th>
+	    </tr>
+	    </thead>
+	    <tbody id="j_tb">
+	    <tr>
+	      <td>
+	        <input type="checkbox"/>
+	      </td>
+	      <td>红烧肉</td>
+	      <td>田老师</td>
+	    </tr>
+	    <tr>
+	      <td>
+	        <input type="checkbox"/>
+	      </td>
+	      <td>西红柿鸡蛋</td>
+	      <td>田老师</td>
+	    </tr>
+	    <tr>
+	      <td>
+	        <input type="checkbox"/>
+	      </td>
+	      <td>红烧狮子头</td>
+	      <td>田老师</td>
+	    </tr>
+	    <tr>
+	      <td>
+	        <input type="checkbox"/>
+	      </td>
+	      <td>日式肥牛</td>
+	      <td>田老师</td>
+	    </tr>
+	    
+	    </tbody>
+	  </table>
+	  <input type="button" value="  反 选  " id="btn">
+	</div>
+	
+	<script type="text/javascript">
+	 $(document).ready(function(){
+	     var j_cbAll=$("#j_cbAll");
+	     var j_tbs=$('tbody :input[type=checkbox]');
+	     
+	     var btn=$('#btn');
+	     
+	     j_cbAll.on('click',function(){
+	         var that=this;
+	         j_tbs.each(function(index,item){
+	             $(item).prop("checked",$(that).prop("checked"));
+	         })
+	     });
+	     
+	     j_tbs.on('click',function(){
+	             j_cbAll.prop("checked",checkAll());
+	     });
+	     
+	     
+	     function checkAll(){
+	         var allChecked=false;
+	         j_tbs.each(function(index,item){
+	             allChecked = true;
+	             if(!$(item).prop("checked")){
+	                 allChecked=false;
+	                 return false;  
+	             }
+	               
+	         })
+	         
+	         return allChecked;
+	     }
+	     
+	     btn.on('click',function(){
+	         j_tbs.each(function(index,item){
+	             $(item).prop("checked",!$(item).prop("checked"));
+	         });
+	         j_cbAll.prop("checked",checkAll());
+	     })
+	 })
+	
+	</script>
+  </body>
+</html>

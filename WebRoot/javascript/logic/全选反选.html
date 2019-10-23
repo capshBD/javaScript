@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>全选反选.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <script type="text/javascript" src="common.js"></script>
+	  <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        .wrap {
+            width: 300px;
+            margin: 100px auto 0;
+        }
+
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+            border: 1px solid #c0c0c0;
+            width: 300px;
+        }
+
+        th,
+        td {
+            border: 1px solid #d0d0d0;
+            color: #404060;
+            padding: 10px;
+        }
+
+        th {
+            background-color: #09c;
+            font: bold 16px "微软雅黑";
+            color: #fff;
+        }
+
+        td {
+            font: 14px "微软雅黑";
+        }
+
+        tbody tr {
+            background-color: #f0f0f0;
+        }
+
+        tbody tr:hover {
+            cursor: pointer;
+            background-color: #fafafa;
+        }
+    </style>
+  </head>
+  
+  <body>
+  	<div class="wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        <input type="checkbox" id="j_cbAll" />
+                    </th>
+                    <th>商品</th>
+                    <th>价钱</th>
+                </tr>
+            </thead>
+            <tbody id="j_tb">
+                <tr>
+                    <td>
+                        <input type="checkbox" />
+                    </td>
+                    <td>iPhone8</td>
+                    <td>8000</td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" />
+                    </td>
+                    <td>iPad Pro</td>
+                    <td>5000</td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" />
+                    </td>
+                    <td>iPad Air</td>
+                    <td>2000</td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" />
+                    </td>
+                    <td>Apple Watch</td>
+                    <td>2000</td>
+                </tr>
+
+            </tbody>
+        </table>
+        <input type="button" value="  反 选  " id="btn">
+    </div>
+  </body>
+  <script type="text/javascript">
+  	var checkboxs=document.querySelectorAll('#j_tb input[type=checkbox]');
+  	
+  	var j_cbAll=my$('j_cbAll');
+  	
+  	var length=checkboxs.length;
+  	
+  	var checkNum=0;
+  	
+  	j_cbAll.onclick=function(){
+  		var i=0;
+  		for(;i<length;i++){
+  			checkboxs[i].checked=this.checked;
+  		}
+  		if(this.checked)
+  		checkNum=length;
+  		else
+  		checkNum=0;
+  	}
+  	
+  	for(var i=0;i<length;i++){
+  		var checkbox=checkboxs[i];
+  		checkbox.onclick=function(){
+  			 singleChecked(this);
+  		}
+  	}
+  	
+  	
+  	function singleChecked(checkBtn){
+  		if(!checkBtn.checked){
+  			j_cbAll.checked=false;
+  			checkNum--;
+  		}else{
+  			checkNum++;
+  		}
+  		if(checkNum==length)
+  		j_cbAll.checked=true;
+  	}
+  	
+  	//反选
+  	my$('btn').onclick=function(){
+  		checkNum=0;
+		for(var j=0;j<length;j++){
+			checkboxs[j].checked=!(checkboxs[j].checked);
+			if(checkboxs[j].checked)
+				checkNum++;
+		}
+		
+		getChecked(checkboxs);
+  	}
+  	
+  function getChecked(checkBtns){
+  		var allChk=true;
+  		
+  		for(var i=0;i<checkBtns.length;i++){
+  			if(!checkBtns[i].checked){
+  				allChk=false;
+  				break;
+  			}
+  		}
+  		
+  		j_cbAll.checked=allChk;
+  }
+  </script>
+</html>

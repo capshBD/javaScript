@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>right.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+    <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+	<script type="text/javascript">
+		function queryString(){
+			var q=location.search.substring(1);//获取当前location的查询参数字符串
+			
+			var o={};
+			
+			var param=q.split("&");
+			
+			for(var i=0;i<param.length;i++){
+				var val=param[i];
+				
+				var index=val.indexOf("=");
+				var v1=val.substring(0,index);
+				var v2=val.substring(index);
+				o[v1]=v2;
+			}
+			return o;
+		}
+	var data=queryString();
+	
+	for(var k in data)
+	console.info(k+data[k]);
+	</script>
+  </head>
+  
+  <body>
+  	<a href="right.html?id=123&name=mike&email=110@qq.com">连接</a>
+  </body>
+</html>

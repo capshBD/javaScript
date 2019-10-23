@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>JavaScript_Array_Date_String.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+    <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+    <script type="text/javascript">
+    		
+    		
+    		function showDate(){
+    			var date = new Date();
+    		    var showTimes = document.getElementById("showTime");
+    		    
+    		    //获取系统年  月  日  时  分  秒
+    		    var year = date.getFullYear();//获取四位数的年
+    		    var mon = date.getMonth();//获取
+    		    var day = date.getDay();//获取四位数的年
+    		    var hou = date.getHours();//获取四位数的年
+    		    var min = date.getMinutes();//获取四位数的年
+    		    var sec = date.getSeconds();//获取四位数的年   		    
+    		    showTimes.innerHTML = year+"年"+mon+"月"+day+"日"+hou+":"+min+":"+sec;   
+    		    setTimeout("showDate()", 1000);
+    		    
+    		}
+    		setTimeout("showDate()", 1000);
+    		
+    //数组排序		
+    var arr=[34,35,12,11,100,567,12,33];
+  		
+  		arr.sort(function (obj1,obj2){
+  			if(obj1>obj2)
+  			return 1
+  			else if(obj1<obj2)
+  			return -1;
+  			return 0;
+  		
+  		});
+  		console.info(arr.toString());
+  		
+  		function Film(name,size,time,rule){
+  			this.name=name;
+  			this.size=size;
+  			this.time=time;
+  			this.rule=rule;
+  		}
+  		
+  		Film.prototype.toString=function(){
+  			return this.name+","+this.size+","+this.time;
+  		}
+  		var f1=new Film("李大春的春天","300M",new Date(24124125));
+  		var f2=new Film("苏小站电影","400M",new Date(14124125));
+  		var f3=new Film("张养牛的奶仓","200M",new Date(74124125));
+  		
+  		var array=[f1,f2,f3];
+  		
+  		function sortRule(type){
+  			
+  			return function(obj1,obj2){
+  				if(obj1[type]>obj2[type])
+  				return 1;
+  				else if(obj2[type]>obj1[type])
+  				return -1;
+  				return 0;
+  			}
+  		}
+  		
+  		array.sort(sortRule("time"));
+  		for(var i in array)
+  		console.info(array[i]);
+  		
+  		var arry=[1,2,3,4,5];
+  		//截取数组放到一个新数组中length=5;原数组不改变 相当于java的substring
+  		console.info(arry.slice(2, 4).toString());//包含start,不包含end 
+  		console.info(arry.slice(1, -1).toString());//1到去掉最后1个
+  		console.info(arry.slice(-4, 2).toString());//相当于((5-4),2),意思是从倒数第几个开始截(包含)
+  		console.info(arry.slice(-4, -2).toString());//两者综合
+  		
+  		var arry2=['a','b','c','d','e','f'];
+  		//移除数组元素,数组改变
+  		console.info(arry2.splice(1, 3).toString());//删掉arry2下标1到3的元素,返回删除的元素组成的数组
+  		console.info(arry2.toString());
+  		
+  		var arry3=['aa','bb','cc','dd','ee'];
+  		console.info(arry3.splice(1, 2, [22,33]));//把数组删除掉的位置用新数组填充 ,返回删除的元素组成的数组
+  		console.info(arry3);
+          
+    </script>
+  </head>
+  
+  <body>
+       <h3 id="showTime"></h3>
+  </body>
+</html>

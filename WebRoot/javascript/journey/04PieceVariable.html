@@ -1,0 +1,161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>04变量</title>
+</head>
+<body>
+	<script type="text/javascript">
+		//测试自定义类  o为0,null,undefined,"",false这几种情况if(o)为false
+		function ConstrObject(id){
+			this.id=id,
+			this.method=function(){
+				return id+"xyz"+id;
+			}
+		}
+		var data=new ConstrObject(13);
+		 console.info(data.method());
+		 console.info(typeof data);
+		 console.info(data.constructor);
+		 
+		 //测试内置类型
+		 var temp=undefined;
+		  console.info("temp的类型"+typeof temp);
+		  console.info(temp&&temp.constructor);
+		  
+		  console.info("window的类型"+typeof window);
+		  console.info("window的构造函数"+window.constructor);
+		    console.info("document的类型"+typeof document);
+		  console.info("document的构造函数"+document.constructor);
+		  
+		  //测试获取数组类型
+		  var iframe=document.createElement("iframe");
+		  document.body.appendChild(iframe);
+		  var A=window.frames[0].Array;//其他frame的Array
+		  console.info("window.Array"+window.Array);//本窗口的Array
+	
+		  console.info("A的类型"+typeof A );
+		  console.info(A);
+		  console.info("A的构造函数"+A.constructor);
+		  
+		  var a=new A();
+		  console.info(a.constructor==Array);
+		  console.info("a的类型"+typeof a);
+		  console.info("a的构造函数"+a.constructor);
+		  
+		  //调用构造函数,申明函数
+		  var test=new Function("num1,num2","return num1*num2");//第一个参数,函数入参;第二个参数,方法体
+		  console.info("调用Function类生成实例方法"+test(5,7));
+		  
+		  
+		  //判断是否是数组
+		  function isArray(o){
+		  		if(o){
+		  			return typeof o==="object"&&"splice" in o && "join" in o;
+		  		}
+		  		
+		  		return false;
+		  }
+		  
+		    console.info("a是否是数组"+isArray(a));
+		    
+		   function isArray2(o){
+		   	if(o)
+		   		return Object.prototype.toString.call(o)==="[object Array]";
+		   	return false;
+		   }
+		   
+		      console.info("a是否是数组"+isArray2(a));
+		      console.info("a是否是数组"+Array.isArray(a));
+		      
+		     //获取对象的类型以及class
+		     console.info("对象的类型及class"+new Object().toString());
+		     var d=new Date();
+		     var m=Object.prototype.toString;
+		     console.info("date的toString"+m.apply(d));
+		     
+		     function typeOf(o){
+		     
+		     	var _toString=Object.prototype.toString;
+		     	
+		     	var _type={
+		     		"undefined":"undefined",
+		     		"number":"number",
+		     		"boolean":"boolean",
+		     		"string":"string",
+		     		"[object Function]":"function",
+		     		"[object RegExp]":"regexp",
+		     		"[object Array]":"array",
+		     		"[object Date]":"date",
+		     		"[object Error]":"error"
+		     	}
+		     	//依次判断,满足即返回,不满足则向后判断以||分割的
+		     	return _type[typeof o]||_type[_toString.call(o)]||(o?"object":null);
+		     }
+		     
+		    var mf=Math.abs;
+		    
+		    console.info(typeOf(mf));
+		    
+		    //自动类型转换
+		   var typeData=undefined;
+		  		 typeData=null;
+		  		 typeData=true;
+		   console.info(1+typeData) ;
+		   
+		   //特殊转换情况
+		   var o1=new Boolean(false),o2=new Number(0),o3=new String("");
+		   o1&&console.info("o1"+o1);o2&&console.info("o2"+o2);o3&&console.info("o3"+o3);// o1&&alert(o1)代表如果o1为true,这输出o1
+		   
+		   
+	</script>
+	
+	<script type="text/javascript">
+	console.info(""           ==   "0" );          // false
+	console.info(0 			  ==   ""   );         // true
+	console.info(0            ==   "0" );          // true
+	console.info(false        ==   "false" );      // false
+	console.info(false        ==   "0"   );        // true
+	console.info(false        ==   undefined );   // false
+	console.info(false        ==   null );         // false
+	console.info(null         ==   undefined);     // true
+	console.info(" \t\r\n"    ==   0   );          // true
+	/* 	
+		Value               Class      Type
+	-------------------------------------
+	"foo"               String     string
+	new String("foo")   String     object
+	1.2                 Number     number
+	new Number(1.2)     Number     object
+	true                Boolean    boolean
+	new Boolean(true)   Boolean    object
+	new Date()          Date       object
+	new Error()         Error      object
+	[1,2,3]             Array      object
+	new Array(1, 2, 3)  Array      object
+	new Function("")    Function   function
+	/abc/g              RegExp     object (function in Nitro/V8)
+	new RegExp("meow")  RegExp     object (function in Nitro/V8)
+	{}                  Object     object
+	new Object()        Object     object */
+	
+	var func=new Function();
+	console.info(func);
+	func.call(new Object(), 1);
+	
+	// 下面的比较结果是：true
+	new Number(10) == 10; // Number.toString() 返回的字符串被再次转换为数字
+	
+	10 == '10';           // 字符串被转换为数字
+	10 == '+10 ';         // 同上
+	10 == '010';          // 同上 
+	isNaN(null) == false; // null 被转换为数字 0
+	                      // 0 当然不是一个 NaN（译者注：否定之否定）
+	
+	// 下面的比较结果是：false
+	10 == 010;
+	10 == '-10';
+	
+	</script>
+</body>
+</html>

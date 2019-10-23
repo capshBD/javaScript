@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>使用DOM方式判断复选框选中状态 </title>
+
+ <script src="jquery-1.8.3.js"></script>
+ 
+<script type="text/javascript">
+	$(document).ready(function(){
+		$("#chk").click(function(){
+			if($("#chk").attr("checked")){
+				alert("操作成功，感谢你的使用!");
+			}else{
+				alert("已取消选中");
+			}
+		});
+		
+	});
+</script>
+</head>
+<body> 
+  <input type="checkbox"  id='chk' />接受服务条款    
+</body>
+</html>

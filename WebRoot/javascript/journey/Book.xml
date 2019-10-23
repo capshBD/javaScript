@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+
+<catalogue xmlns="urn:xml_study:清华大学出版社"
+		   xmlns:机械工业出版社="urn:xml_study:机械工业出版社"
+		   xmlns:化学工业出版社="urn:xml_study:化学工业出版社"
+		   xmlns:电子工业出版社="urn:xml_study:电子工业出版社">
+	<book ISBN="7-301-X/TP" date="2003年1月">
+		<name>无线电研究学</name>
+		<author>MIckch</author>
+		<bind>平装</bind>
+		<page>213</page>
+		<price>56元</price>
+	 <![CDATA[
+	 	吃书使用了无线电爱好者!
+	 ]]>
+	</book>
+	
+	<book ISBN="7-302-X/TP" date="2003年2月"/>
+	
+	<机械工业出版社:book ISBN="7-303-X/TP" date="2003年3月">
+		<机械工业出版社:name sid="sid">机械原理</机械工业出版社:name>
+		<机械工业出版社:author>Facker</机械工业出版社:author>
+		<机械工业出版社:bind>组装</机械工业出版社:bind>
+		<机械工业出版社:page>451</机械工业出版社:page>
+		<机械工业出版社:price>53元</机械工业出版社:price>
+	</机械工业出版社:book>
+	
+	<电子工业出版社:book/>
+</catalogue>

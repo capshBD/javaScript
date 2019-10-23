@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>eatSnake.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+    <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+    	<style type="text/css">
+    		.map{
+    			width: 800px;
+    			height: 600px;
+    			background-color: #CCC;
+    			position: relative;
+    		}
+    	</style>
+  </head>
+  
+  <body>
+  	<div class="map" id="map"></div>
+  	<div id="m" style="width: 30px;height: 20px">
+  		<input type="button" value="change" id="btn"/>
+  	</div>
+  </body>
+  
+    <script type="text/javascript">
+    	(
+    		function(win){
+    			function Random(){}
+    			Random.prototype.getRandom=function(min,max){
+    				return Math.floor(Math.random()*(max-min)+min);
+    			}
+    		win.Random=new Random();//暴露给顶级window对象
+    		}
+    		
+    	)(window);
+    	
+    	console.info(Random.getRandom(10,50));
+    	
+    	(function(window){
+    		var map=document.getElementById("map");
+    			console.info(map);
+    		
+    		function Food(width,height,color){
+    			this.width=width||20;
+    			this.height=height||20;
+    			this.color=color||"green";
+    			this.x=0;
+    			this.y=0;
+    			this.element=document.createElement("div");
+    		}
+    		Food.prototype.init=function(map){
+    			var div=this.element;
+    			div.style.position="absolute";//脱离文档流
+    			div.style.width=this.width+"px";
+    			div.style.height=this.height+"px";
+    			div.style.backgroundColor=this.color;
+    			map.appendChild(div);
+    			this.render(map);
+    		}
+    		
+    		Food.prototype.render=function(map){
+    			var x=Random.getRandom(0,map.offsetWidth/this.width)*this.width;
+    			var y=Random.getRandom(0,map.offsetHeight/this.height)*this.height;
+    			this.x=x;
+    			this.y=y;
+    			var div=this.element;
+    			div.style.left=this.x+"px";
+    			div.style.top=this.y+"px";
+    			console.info(x+"|"+y);
+    		}
+    	
+    	var food=new Food(20,20,"blue");
+    	food.init(map);
+    	})(window);
+    </script>
+    
+    <script type="text/javascript">
+    		function ChangeStyle(btn,div,json){
+    			this.btn=btn;
+    			this.div=div;
+    			this.json=json;
+    		}
+    		
+    		ChangeStyle.prototype.init=function(){
+    			var that=this;
+    			this.btn.onclick=function(){
+	    			for(var key in that.json){
+	    				that.div.style[key]=that.json[key];
+	    			 }
+    			}
+    		}
+    		
+    		/* var d=new ChangeStyle(document.getElementById("btn"),
+    							  document.getElementById("m"),
+    							  {"width":"150px","height":"200px","backgroundColor":"yellow"});
+    		d.init(); */
+    		
+    		
+    		function ChangeStyle2(btn,div,value){
+    			this.btn=btn;
+    			this.div=div;
+    			this.value=value;
+    		}
+    		
+    		ChangeStyle2.prototype.init=function(){
+    			var that=this;
+    			
+    			this.btn.onclick=function(){
+    				//this.value=that.value;
+    				that.btn.value=that.value;
+    			}
+    		}
+    		
+    		var d2=new ChangeStyle2(document.getElementById("btn"),
+    							  document.getElementById("m"),
+    							  "button");
+    		d2.init();
+    	</script>
+</html>

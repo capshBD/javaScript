@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>capsulInfoHide.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+    <!-- 通过访问对象的闭包函数可以访问闭包变量，从而实现对对象属性的隐藏 -->
+
+  </head>
+  
+  <body>
+  <script type="text/javascript">
+  	function Book(isbn,title,author){
+  		this.setIsbn(isbn);
+  		this.setTitle(title);
+  	}
+  	Book.prototype={
+  			constructor:Book,
+  			_checkIsbn:function(isbn){
+  				if(!isbn||typeof isbn !='string')
+  				return false;
+  				return true;
+  			},
+  			setIsbn:function(isbn){
+  				if(this._checkIsbn(isbn))
+  				this._isbn=isbn;
+  				else
+  					throw new Error("图书编号异常");
+  			},
+  			getIsbn:function(){
+  				return this._isbn;
+  			},
+  			setTitle:function(title){
+  				title=title||'标题';
+  				this._title=title;
+  			},
+  			getTitle:function(){
+  				return this._title;
+  			},
+  			display:function(){
+  				return this._isbn+"|"+this._title;
+  			}
+  	}
+  	
+  	var book=new Book('num','title');
+  	console.info(book.getTitle());
+  	console.info(book.display());
+  	console.info(book);
+  	
+  	function NewBook(newisbn,newtitle,newauthor){
+  		var isbn,title,author;
+  		function checkIsbn(isbn){
+  			if(!isbn||typeof isbn !='string')
+  				return false;
+  				return true;
+  		}
+  		
+  		this.setIsbn=function(newisbn){
+  			if(!checkIsbn(newisbn))
+  			throw new Error("图书编号异常2");
+  			isbn=newisbn;
+  		};
+  		this.getIsbn=function(){
+  			return isbn;
+  		};
+  		this.setTitle=function(newtitle){
+			newtitle=newtitle||'标题';
+			title=newtitle;
+  		};
+  		this.getTitle=function(){
+  				return title;
+  		};
+  		this.setIsbn(newisbn);
+  		this.setTitle(newtitle);
+  	}
+  	
+  	var	newBook=new NewBook("hello");
+  	console.info(newBook.getIsbn());
+  	console.info(newBook.getTitle());
+  	console.info(newBook);
+  	
+  	function English(){
+  	}
+  	English.prototype=new NewBook("good");
+  	var eng=new English();
+  		console.info(eng);
+  		eng.setIsbn("maria")
+  		console.info(eng.getIsbn());
+  		
+  var BK=(function(){
+  	//静态成员 
+  	var bookNum=0;
+  	//静态方法
+  	function checkIsbn(isbn){
+  			if(!isbn||typeof isbn !='string')
+  				return false;
+  				return true;
+  		}
+  		
+  	return function(newisbn){
+  		var isbn;
+  		this.setIsbn=function(newisbn){
+  			if(!checkIsbn(newisbn))  //行的时候能够访问外部定义的模拟静态函数
+  			throw new Error("图书编号异常3");
+  			isbn=newisbn;
+  		};
+  		this.getIsbn=function(){
+  			return isbn;
+  		};
+  		this.setIsbn(newisbn);
+  		bookNum++; //运行的时候能够访问外部定义的模拟静态变量
+  		if(bookNum>2)
+  			throw new Error("图书超量");
+  		
+  	}
+  	
+  })();
+  
+  var bk=new BK("aa");
+  bk=new BK("bb");
+  bk=new BK("cc");
+  </script>
+  </body>
+</html>

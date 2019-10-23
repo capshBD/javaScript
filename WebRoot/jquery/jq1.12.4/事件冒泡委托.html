@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>事件冒泡委托.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <style>
+    #box {
+      width: 500px;
+      height: 500px;
+      background-color: pink;
+    }
+  </style>
+  <!-- 
+   绑定事件的几种方式
+   1. jquery对象的on(eventName,[selector, data],fn)方法 ,加selector和data可以将事件委托给自己的下级元素
+   2. jquery对象的bind(config) 方法 可以一次性绑定多个事件
+   3. 事件委托 delegate(selector,eventName,fn) 将传入的事件绑定到自己的下级元素
+   4. jquery对象的eventFunction(fn) jquery对象的事件方法
+   一个dom元素事件触发时,默认会将这个事件传递给它的所有上级元素
+   移除事件  jquery对象的off()方法 只会移除自身的事件 下级不收影响
+   
+   手动触发一个事件 :调用 jquery对象的trigger(eventName)或者 jquery对象的eventFunction() 不传参数
+   -->
+    <script type="text/javascript" src="../common/js/jquery-1.12.4.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			$('#btn').click(function(){
+				$("<p>55555</p>").appendTo($('div:eq(1)'));
+			})
+			$('#trg').on("click",function(){
+				//$('p:eq(2)').click();//让p触发事件
+				  $("p:eq(4)").trigger("click");//让p触发事件
+			})
+			$("#rem").on("click",function(){
+				$('div:eq(0)').off();//移除事件
+			})
+			
+			$('span').bind("click",function(){
+				alert("bindspan");
+			})  
+			//bind方法注册事件
+			/* 
+				$('p').bind({
+					click:function(){
+						alert("bind click");
+					},
+					mouseenter:function(){
+						alert("bind mouseenter");
+					},
+				})
+			*/
+			   //要给div注册一个委托事件,但是最终不是由执行，而是有p执行
+			    //第一个参数：selector:事件最终由谁来执行。
+			    //第二个参数：事件的类型
+			    //第三个参数：函数，要做什么
+			    
+			    //1. 动态创建的也能有事件 :缺点：只能注册委托事件
+			/* $('div:eq(1)').delegate("p","click",function(){
+				console.info(this);//this指向p元素
+			})
+			 */
+			 //100，注册的时候的时候，把100传到事件里面去。
+    		var money = 100;
+		    //on(types, selector, data, callback)
+		    //使用on方法的时候，可以给data参数传一个值，可以在事件里面通过e.data获取到。
+			   $("div:eq(0)").on("click", "p",money,function (e) {
+			      alert($(this).text()+"|"+e.data);
+			    });
+			    
+			 $("#link").on("click", function (e) {
+			      //阻止 默认
+			      e.preventDefault();
+			      //e.stopPropagation();
+			       console.log(e.cancelBubble);//undefined
+			     // return false;//既能阻止事件冒泡，也能阻止浏览器的默认行为。
+			     
+			    }); 
+			    
+			$('label').click(function(){
+				alert("事件冒泡给label我了");
+			})
+		})
+	</script>
+  </head>
+  
+  <body>
+  	<!--点击按钮，在div里面创建一个新的p元素-->
+<input type="button" value="按钮" id="btn">
+<input type="button" value="移除" id="rem">
+<input type="button" value="触发" id="trg">
+<label>
+<a href="http://web.itcast.cn" id="link">web</a>
+</label>
+
+
+<div id="box">
+  <div>
+    <span>呵呵</span>
+    <p>11111</p>
+    <p>22222</p>
+    <p>33333</p>
+    <p>44444</p>
+  </div>
+</div>
+  </body>
+</html>

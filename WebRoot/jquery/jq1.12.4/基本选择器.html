@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>基本选择器.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+    <script type="text/javascript" src="../common/js/jquery-1.12.4.js"></script>
+    
+    <!-- 
+         id选择器: #id
+                   标签选择器: div
+                   类选择器: .class
+                    并集选择器:select1,select2,select3
+                    交集选择器:select1select2
+                    后代选择器:select1 select2
+                     子选择器 :select1>select2    
+                 所有紧接选择器 :select1+select2 选出来的都拥有同一个祖宗节点
+                所有同辈 选择器 : select1~select2 
+        header选择器: 固定写法 :header,匹配如 h1, h2, h3之类的标题元素
+        html元素选择器     固定写法 :root
+                针对所有的表单的input元素,如文本框,radio,select,textarea  固定写法 :input
+       选择器之后加冒号可以对选择后的元素进行进一步过滤;
+     :first 如 $('li:first') 就是选择到所有li元素,然后取第一个  对应 :last
+         排除选择: :not(select) 去除所有与给定选择器匹配的元素  如$("input:not(:checked)")
+     :odd   (奇数索引)
+     :even  (偶数索引)
+     :eq(index) (索引等于) 
+     :gt(index)  (索引大于) 对应:lt(index)
+     :animated 正在执行动画的
+     :focus 获取焦点的
+     :contains(text) 包含文本	
+     :empty 不包含任何子元素或者文本 对应:parent
+     :has(selector) 在里面可以找到另一种选择器的元素
+     :hidden 所有不可见元素，或者type为hidden 对应:visible
+     
+     //对匹配的元素进行下级过滤
+     :first-child 第一个孩子 对应:last-child
+     :nth-child(index) 第index个孩子 index从1开始
+     :nth-last-child(index) 倒数第index个孩子
+     :only-child 只有一个孩子
+     :first-of-type 每一个匹配的元素中查找与第一个匹配元素的第一个类型相同的元素如:
+     在每一个匹配的div中查找第一个span $("div:first-of-type") 有问题
+	<div>
+		<span>1</span>
+		<span>2</span>
+		<span>3</span>
+	</div>
+	
+	<div>
+		<a>6</a>
+		<span>4</span>
+		<span>5</span>
+	</div>
+
+ 选择器之后加中括号可以对选择后的元素进行进一步属性过滤;
+ 如select[attr=value] 属性等于 ;select[attr^=value] 属性以某个字符串开头 ;select[attr$=value] 属性以某个字符串结尾;select[attr*=value] 属性包含
+ 多个属性过滤可以联合使用
+     -->
+    <script type="text/javascript">
+    	$(function(){
+    		 $("#four").css("backgroundColor", "red");
+    		 $(".green").css("backgroundColor", "green");
+    		 // 并集
+		    //$("#four,.green").css("backgroundColor", "pink");
+		    
+		    //交集
+		     $("li.green").css("backgroundColor", "yellow");
+   			 $(".green.yellow").css("backgroundColor", "pink");
+   			 
+   			 //可能匹配到外层的多个ul元素 判断每个ul元素中具有唯一li的li元素
+   			 $("ul li:only-child").css("backgroundColor", "#45216F");
+   			console.info($("ul li:even").size());
+   			//$("div:first-of-type").css("backgroundColor", "#3321DF");
+    	})
+    </script>
+
+  </head>
+  
+  <body>
+	<ul>
+		<li>1</li>
+		<li>2</li>
+		<li>3</li>
+		<li id="four">4</li>
+		<li>5</li>
+		<li class="green yellow">6</li>
+		<li class="green">7</li>
+		<li>8</li>
+		<li>9</li>
+		<li>10</li>
+	</ul>
+	
+	<ul>
+	<li>li1</li>
+	<li>li2</li>
+	<li>li3</li>
+	
+	</ul>
+	
+	<ul>
+	<li>lii1</li>
+	</ul>
+
+
+	
+	<div>
+		<span>1</span><br>
+		<span>2</span><br>
+		<a>7</a><br>
+		<span>3</span><br>
+	</div>
+	
+	<div>
+		<a>6</a><br>
+		<span>4</span><br>
+		<span>5</span><br>
+		<a>8</a><br>
+	</div>
+	
+     <div class="green">111</div>
+	<div class="green">111</div>
+	<div class="green">111</div>
+	<div class="green">111</div>
+
+</body>
+</html>

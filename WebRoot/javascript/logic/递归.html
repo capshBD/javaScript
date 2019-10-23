@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>递归.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+    <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+
+  </head>
+  
+  <body>
+  
+  <script type="text/javascript">
+  	//求num+(num-1)+(num-2)+...+1的和
+  	function getSum(num){
+  		if(num==1)
+  		return 1;
+  		
+  		return num+getSum(num-1);
+  	}
+  	
+  	//321，求各个位数数字的和 3+2+1
+  	function getEverySum(ber){
+  		if(ber<10)
+  		return ber;
+  		
+  		return ber%10+getEverySum(parseInt(ber/10));
+  	}
+  	
+  	//菲薄那切数列，从第三个月开始，每个月的兔子对数是前两个月的和
+  	function getTuzi(month){
+  		if(month==1||month==2)
+  		return 1;
+		
+		return getTuzi(month-1)+getTuzi(month-2);
+  	}
+  	
+  	console.info(getSum(100));
+  	console.info(getEverySum(3214518));
+  	console.info(getTuzi(12));
+  	
+  	//汉诺塔问题
+  	num=0;
+  	function  f(n,a,b,c){
+  	num+=1;
+  		if(n==1)
+  			document.write(a+"&rarr;"+c+"<br/>")
+  		else{
+  			f(n-1,a,c,b);
+  			document.write(a+"&rarr;"+c+"<br/>")
+  			f(n-1,b,a,c);
+  		}
+  	
+  	}
+  	
+  	f(5,"A","B","C");
+  	console.info(num);
+  	
+  </script>
+  </body>
+</html>

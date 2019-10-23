@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>创建与添加节点.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+     <script type="text/javascript" src="../common/js/jquery-1.12.4.js"></script>
+     <script type="text/javascript">
+     	
+     	$(function(){
+     		//创建jq对象
+     		var $a=$('<a href="http://web.itcast.cn" target="_blank">传智大前端</a>');
+     		console.log($a);
+     		//在div中添加子元素
+     		$('div').append($a);
+     		//在div的第一个位置添加子元素
+     		$('div').prepend('<a href="http://www.baidu.com">百度</a>');
+     		
+     		//创建子元素并添加到div
+     		$('<p>p</p>').appendTo($('div'));
+     		//创建子元素并添加到div的第一个位置
+     		$('<span>span</span>').prependTo($('div'));
+     			
+     		 //在div的前面或后面添加一个兄弟元素
+     		 $('div').after($("<p>p批</p>"));
+			 //$('div').before($("<p>p批</p>"));
+			 
+			 
+				//删掉节点方法
+			    //$("div").html("");会造成内存泄漏，注册的事件函数没有释放
+			    //$("div").empty();清理门户，把自己下面的子元素干掉
+			    //$("div").remove();把自己以及自己下面的子元素一起干掉
+			  
+			    //false:不传参数也是深度复制,不会复制事件
+			    //true:也是深复制，会复制事件
+			    //$("selector").clone(true).appendTo("div");
+     		
+     	})
+     </script>
+
+  </head>
+  
+  <body>
+  	<div></div>
+  </body>
+</html>

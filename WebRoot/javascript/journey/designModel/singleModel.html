@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>singleModel.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+
+  </head>
+  
+  <body>
+  	<script type="text/javascript">
+  		var GiantCorp={};
+  		
+  		GiantCorp.singleton=(function(){
+  			var uniqueInstance;
+  			function constructor(){
+  				var privateAttr1=10;
+	  			var privateAttr2='attr';
+	  			
+	  			var privateMethod1=function(){
+	  				return privateAttr1;
+	  			};
+	  			var privateMethod2=function(arg){
+	  				return privateAttr2+arg;
+	  			};
+	  			
+	  			return {
+	  				publicAttr1:100,
+	  				publicAttr2:'public',
+	  				publicMethod1:function(){
+	  					return privateMethod1;
+	  				},
+	  				publicMethod2:function(arg){
+	  					return privateMethod2;
+	  				},
+	  				publicMethod3:function(){
+	  					return privateAttr1+this.publicAttr1;
+	  				},
+	  				setAttrValue:function(num){
+	  					privateAttr1=num;
+	  				}
+	  			}
+  			}
+  			
+  			return {
+  				getInstance:function(){
+  					if(!uniqueInstance)
+  					uniqueInstance=constructor();
+  					return 	uniqueInstance;
+  				}
+  			}
+  			
+  		})();
+  		
+  		console.info(GiantCorp.singleton.getInstance().publicMethod3());
+  		GiantCorp.singleton.getInstance().setAttrValue(20);
+  		console.info(GiantCorp.singleton.getInstance().publicMethod3());
+  		console.info(GiantCorp.singleton.getInstance().publicMethod2('string')('string'));
+  		
+  		
+  		
+  	</script>
+  </body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>left.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+    <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+	<script type="text/javascript">
+			
+		window.onload=function(){
+			document.body.onclick=f2;
+		};
+			var f2=function(){
+				parent.frames[2].document.body.style.backgroundColor="green";
+			};
+	</script>
+  </head>
+  
+  <body>
+   	点击我可以让右边变色
+  </body>
+</html>

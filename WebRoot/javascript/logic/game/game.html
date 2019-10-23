@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>game.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+     <style type="text/css">
+    	#map {
+		  width: 800px;
+		  height: 600px;
+		  background-color: #ccc;
+		  position: relative;
+		}
+    	
+    </style>
+     <script type="text/javascript" src="../common.js"></script>
+
+  </head>
+  
+  <body>
+  	<div id="map"></div>
+  </body>
+  	<script type="text/javascript" src="food.js"></script>
+  	<script type="text/javascript" src="snake.js"></script>
+  	<script type="text/javascript" src="game.js"></script>
+  	<script type="text/javascript">
+  		 var map =my$("map");
+		  var game = new Game();
+		  game.start(map);
+  	</script>
+</html>

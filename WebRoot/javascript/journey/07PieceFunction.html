@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>7Piece.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+    <!--闭包,函数自调用,Function顶级作用域,(call,apply,bind)方法,arguments参数,this属性,函数的属性,定时器-->
+    <!-- 
+    1.  调用函数返回的函数含有闭包变量，并且访问的时候优先访问闭包变量
+                调用函数中申明一个全局函数 ，这个函数也可以访问闭包变量
+                调用函数返回一个闭包对象 ，调用这个对象的方法或属性时可以访问闭包变量
+                循环返回闭包对象时，要注意闭包变量的绑定 
+                 对象调用函数返回一个闭包函数再调用的时候注意闭包变量this的指向绑定
+      返回Function 实例的函数  优先访问全局变量
+      函数实例化的对象调用函数 this指向这个对象，直接调用 this指向window,并为window的全局变量赋值
+   arguments.length //获取实参的个数   arguments.callee.length;//获取形参的个数 并可以对实参和arguments数组相互改变值
+     函数自己定义的属性或方法 内部的属性或方法 只有在调用之后外部才能访问
+     函数的call 与apply方法可以把函数里面的this指向某个对象，apply可以传递数组参数
+     函数的bind方法，将函数与某个对象绑定并返回函数
+     -->
+  </head>
+  
+  <body>
+  	<script type="text/javascript">
+  		var n=1;
+  		function f1(){
+  			var n=2;
+  			function e(){
+  				return n;
+  			}
+  			return e;
+  		}
+  		
+  		console.log(f1()())
+  		
+  		function f2(){
+  			var n=3;
+  			
+  			var e=new Function("return n;");//此种定义具有顶级作用域,能够访问最外层的n
+  			
+  			return e;
+  		}
+  		
+  		console.log(f2()())
+  		
+  		
+  		//arguments 的callee属性
+  		
+  		function f3(x,y,z){
+  			var length=arguments.length;//获取实参的个数
+  			var callLength=arguments.callee.length;//获取形参的个数
+  			  arguments[0] = 22;//改变arguments[0]参数的值
+  			  y=44;// arguments[1]被改变
+  			if(length!=callLength)
+  				throw new Error("参数个数不对");
+  			else
+  				return x+y+z;
+  		}
+  		
+  		console.info(f3(1,2,2));
+  		
+  		//this关键字
+  		function f4(){
+  			this.a="a";
+  			console.info(this.a+"|"+this.b+"|"+this.c);
+  			b()
+  			function b(){
+  				this.b="b";
+  				console.info(this.a+"|"+this.b+"|"+this.c);
+  				c();
+  				
+  				function c(){
+  					this.c="c";
+  						console.info(this.a+"|"+this.b+"|"+this.c);
+  				}
+  			}
+  			
+  		}
+  		
+  		f4();
+  		
+  		function f5(){
+  			this.a="aa";
+  			console.info(this.a+"|"+this.b+"|"+this.c);
+  			var bb=new b()
+  			function b(){
+  				this.b="bb";
+  				console.info(this.a+"|"+this.b+"|"+this.c);
+  				var cc=new c();
+  				
+  				function c(){
+  					this.c="cc";
+  						console.info(this.a+"|"+this.b+"|"+this.c);
+  				}
+  			}
+  			
+  		}
+  	var ff=new f5();
+  	
+  	//函数的属性
+  	 function f6(){
+  	 	f6.x=1;
+  	 	console.info(f6.x);
+  	 	console.info(f6.y);
+  	 }
+  	 
+  	 f6.y=2;
+  	console.info(f6.x);//无法访问内部定义的属性
+  	console.info(f6.y);
+  	f6();
+  	console.info("调用函数之后"+f6.x);//函数调用之后可以访问内部属性
+   //给函数添加一个function
+  	function f7(){
+  		f7.x=function(x){
+  			return x;
+  		}
+  		
+  	console.info("内部调用"+f7.x(4));
+  	console.info("内部调用"+f7.y(4));
+  	}
+  			
+  	f7.y=function(y){
+  		return y*y;
+  	}
+  	f7();
+   	console.info("外部调用"+f7.x(4));
+  	console.info("外部调用"+f7.y(4));	
+ 	
+ 	//函数属性实现累加
+  	function f8(){
+  		return f8.x++;
+  	}
+  	
+  	f8.x=0;
+  	for(var i=1;i<10;i++)
+  		console.log("用函数属性实现累加"+f8());
+  		
+  	//call与apply方法 apply可以传递数组
+  	function max(){
+  		var m=Number.NEGATIVE_INFINITY;
+  		
+  		for(var i=0;i<arguments.length;i++){
+  			if(arguments[i]>m)
+  			m=arguments[i];
+  		}
+  		
+  		return m;
+  	}
+  	
+  	var data=[14,45,44,56,33,78,11,29];
+  	console.info("把max方法绑定到Object身上并调用"+max.apply(Object, data));
+  	
+  	//call,apply的高级应用
+  	function r(x){
+  		return x;
+  	}
+  	
+  	function f(x){
+  		x[0]=x[0]+">";
+  		//console.info(x);
+  		return x;
+  	}
+  	
+  	function o(){
+  		/*	temp=r(x)
+  			temp=function(){return r(x).apply(this,f(arguments))}
+  			
+  			r=function(){
+  				return function(){return r(x).apply(this,f(arguments))}
+  					.apply(this,f(arguments));
+  			}
+  		*/
+  			var temp=r;
+  			r=function(){
+  				return temp.apply(this,f(arguments));
+  			}
+  	}
+  	
+  	function acd(){
+  		o();
+  		console.info(r( "=" ));
+  	}
+  	
+  	for(var i=0;i<10;i++){
+  		acd();
+  	}
+  	</script>
+  	<script type="text/javascript">
+  		//闭包
+  		function cf(){
+  			var a1=1;
+  			b1=function(){//返回的闭包含有局部变量a1的应用,所以函数体执行完毕后不会注销a1
+  				alert(a1);
+  			}
+  			c1=function(){
+  				a1++;
+  			}
+  			d1=function(x){
+  				a1=x;
+  			}
+  		}
+  		
+  		//闭包2
+  		function cf2(x){
+  			
+  			var a2=[];
+  			for(var i=0;i<x.length;i++){
+  				var temp=x[i];
+	  			a2.push(/* function(){
+	  					       console.info(temp+" "+x[i])//最终返回的闭包的temp的值不是固定的,i也不是固定的 外部调用闭包函数的时候只会访问变量的最后一次赋值
+	  				    } */
+	  			//改进后的方法
+	  			(function(temp,i){
+	  				return function(){
+	  					 console.info(temp+" "+x[i])
+	  				}
+	  			
+	  			})(temp,i)//每一次遍历相当于都是不同的变量
+  				
+  				);
+  			}
+  			
+  			return a2;
+  		}
+  		
+  		function df2(){
+  			var da=["a","b","c"];
+  			var arry=cf2(da);
+  			for(var j=0;j<da.length;j++)
+  				arry[j]();
+  		}
+  		
+  		df2();
+  		
+  	/* Counter 函数返回两个闭包，函数 increment 和函数 get。
+	 这两个函数都维持着 对外部作用域 Counter 的引用，
+	 因此总可以访问此作用域内定义的变量 count. */
+	function Counter(start){
+		var count=start;
+		return {
+			increment:function(){
+				count++;
+			},
+			
+			get:function(){
+				return count;
+			}
+		}
+	}
+	
+	var counter=Counter(4);
+	counter.increment();
+	console.log("counter闭包执行count结果"+counter.get());
+	
+	var foo = new Counter(4);
+	foo.hack = function() {
+	    count = 1337;
+	};
+	foo.hack();
+	console.log("返回的闭包对象自定义方法执行后count结果"+count);
+  	console.log("返回的闭包对象执行后count结果"+foo.get());
+  
+  function f1(){
+  	var num=99;
+  	nAdd=function(){//暴露给了全局，并记录了num
+  		num+=1;
+  	}
+  	function f2(){
+  		console.log("闭包执行num结果"+num);
+  	}
+  	
+  	return f2;
+  }
+  
+  var result=f1();
+  result();
+  nAdd();
+  result();
+  
+  var name="the window";
+  
+  var obj={
+  	name:'the obj',
+  	getNameFun:function(){
+  	var that=this;
+  		function getFun(){
+  			return that.name;
+  		}
+  		return getFun;
+  	}
+  }
+  console.log("闭包绑定对象属性name结果"+obj.getNameFun()());
+  
+  
+  /* 
+   	当 console.log 被调用的时候，匿名函数保持对外部变量 i 的引用，此时 for循环已经结束， i 的值被修改成了 10. 
+    */
+    
+	/* for(var i=0;i<10;i++){
+		setTimeout(function(){
+			console.log(i);
+		
+		},1000);
+	} */
+	
+	/*
+		为了正确的获得循环序号，最好使用 匿名包裹器（译者注：其实就是我们通常说的自执行匿名函数）
+	  */
+	  //方式1，给setTimeout的第一个参数设置一个 匿名包裹器
+	for(var i=0;i<10;i++){
+		(function(e){
+			setTimeout(function(){
+				console.log(e);
+			},1000);
+		})(i);
+	}
+	
+	//方式2，给setTimeout的第一个参数设置一个闭包
+	/* for(var i=0;i<10;i++){
+		setTimeout((function(e){
+				return function(){
+					console.log(e);
+				}
+		})(i), 1000);
+	} */
+  	</script>
+  	
+  	<button onclick="cf()">按钮一,cf函数</button><br/>
+  	<button onclick="b1()">按钮二,b1函数</button><br/>
+  	<button onclick="c1()">按钮三,c1函数</button><br/>
+  	<button onclick="d1(100)">按钮四,d1函数</button><br/>
+  </body>
+  <script type="text/javascript">
+  	//匿名包裹器，自调用的几种方式
+  	var fname=function (){
+			alert(this);
+		}();
+		
+		(function (a){
+			alert(a);
+		})(1234);
+		
+		(function(b){
+			alert(b);
+		}(4321));
+		
+		!function (c){
+			alert(c);
+		}(5678);
+		
+		/*
+	call方法:
+	语法：call([thisObj[,arg1[, arg2[,   [,.argN]]]]])
+	定义：调用一个对象的一个方法，以另一个对象替换当前对象。
+	说明：
+	call 方法可以用来代替另一个对象调用一个方法。call 方法可将一个函数的对象上下文从初始的上下文改变为由 thisObj 指定的新对象。
+	如果没有提供 thisObj 参数，那么 Global 对象被用作 thisObj。
+	
+	apply方法：
+	语法：apply([thisObj[,argArray]])
+	定义：应用某一对象的一个方法，用另一个对象替换当前对象。
+	说明：
+	如果 argArray 不是一个有效的数组或者不是 arguments 对象，那么将导致一个 TypeError。
+	如果没有提供 argArray 和 thisObj 任何一个参数，那么 Global 对象将被用作 thisObj， 并且无法被传递任何参数。 
+	 */
+
+	function add(a,b){
+	 alert(a+b);
+	}
+	
+	function sub(a,b){
+	 alert(a-b);
+	}
+	
+	add.call(sub, 3,1);
+	
+	
+	function Animal(){
+		this.name='animal';
+		this.showname=function(a,b,c){
+			alert(this.name+a+b+c);
+		}
+	}
+	
+	function Cat(){
+		this.name='cat';
+	}
+	  var animal=new Animal();
+	  var cat=new Cat();
+	  
+	 animal.showname.call(cat,1,2,3);
+	 animal.showname.apply(cat,[1,2,3]);
+  </script>
+  
+  <script type="text/javascript">
+  	//bind方法
+  	function sum(x,y){
+  		console.info(this);
+  		return "x+y="+(x+y)+this.name;
+  	}
+  	//把bind函数绑定到某个对象身上并执行方法，传null值就是window,复制了一份，改变了this指向
+  	console.info(sum.bind(null)(20,40));
+  	
+  	function Person(age){
+  		this.name="doman";
+  		this.age=age;
+  	}
+  	
+  	Person.prototype.eat=function(){
+  		console.info("人的岁数"+this.age+this.constructor);
+  	}
+  	
+  	function Dog(age){
+  		this.name="erha";
+  		this.age=age;
+  	}
+  	
+  	Dog.prototype.eat=function(){
+  		console.info("狗的岁数"+this.age);
+  	}
+  	
+  	var per=new Person(33);
+  	console.info(sum.bind(per)(10,20));
+  	
+  	var d=new Dog(22);
+  	
+  	per.eat.bind(d)();
+  	
+  	
+  	//定时器
+  	
+  	function ShowRandom(){
+  		this.num=parseInt(Math.random()*10);
+  	}
+  	
+  	ShowRandom.prototype.getRandom=function(){
+  		this.num=parseInt(Math.random()*10);
+  		
+  	}
+  	ShowRandom.prototype.show1=function(){
+  		setInterval(this.show2.bind(this), 1000);
+  	}
+  	ShowRandom.prototype.show2=function(){
+  		this.getRandom();
+  		console.info(this.num+"=="+this.constructor);
+  	}
+  	
+  	var rn=new ShowRandom();
+  	rn.show1();
+  	
+  	//判断对象类型
+  	
+  	function getFunc(type){
+  	
+  		return function (obj){
+  			return Object.prototype.toString.call(obj)==type;
+  		}
+  	}
+  	
+  	var f=getFunc("[object Array]");
+  	console.info(f([1,2,3]));
+  
+  </script>
+</html>

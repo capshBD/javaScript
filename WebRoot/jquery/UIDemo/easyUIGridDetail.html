@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>easyUIGridDetail.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+    <link rel="stylesheet" type="text/css" href="../easyUI/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="../easyUI/themes/default/easyui.css">
+    <script type="text/javascript" src="../easyUI/jquery.min.js"></script>
+    <script type="text/javascript" src="../easyUI/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../easyUI/extension/datagrid-detailview.js"></script>
+    <script type="text/javascript" src="../easyUI/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript">
+    	var conf={
+    		options:{
+    			fitColumns:true,
+    			columns:[[
+					{field:'company',title:'Company Name',width:200},
+					{field:'contact',title:'Contact Name',width:200},
+					{field:'country',title:'Country',width:200}
+				]],
+				data:[
+					{company:'Speed Info',contact:'Minna John',country:'Sweden'}
+				]
+    		},
+    		subgrid:{
+    				options:{
+						fitColumns:true,
+						foreignField:'companyid',
+						columns:[[
+							{field:'orderdate',title:'Order Date',width:200},
+							{field:'shippeddate',title:'Shipped Date',width:200},
+							{field:'freight',title:'Freight',width:200}
+						]],
+						data:[
+							{orderdate:'08/23/2012',shippeddate:'12/25/2012',freight:9734},
+							{orderdate:'01/23/2011',shippeddate:'12/24/2012',freight:9634}
+						]
+				},
+				subgrid:{
+					options:{
+						fitColumns:true,
+						foreignField:'orderid',
+						columns:[[
+							{field:'emp_id',title:'员工号',width:200},
+							{field:'emp_name',title:'员工名',width:200},
+							{field:'emp_sale',title:'员工薪水',width:200},
+							{field:'emp_date',title:'员工生日',width:200}
+						]],
+						data:[
+							{emp_id:'1003311',emp_name:'吴用', emp_sale:23.45,emp_date:'01/23/2011'},
+							{emp_id:'1003312',emp_name:'紫多晓',emp_sale:22.45,emp_date:'01/22/2011'},
+							{emp_id:'1003313',emp_name:'顾天宇',emp_sale:21.45,emp_date:'01/21/2011'},
+							{emp_id:'1003314',emp_name:'李逍遥',emp_sale:12.45,emp_date:'01/13/2011'}
+							
+						]
+					}
+				}
+    		}
+    	};
+    
+    	$(function(){
+    		$('#tt').datagrid({
+    			title:'数据列详细信息',
+				width:500,
+				height:250,
+				remoteSort:false,
+				singleSelect:true,
+				nowrap:false,
+				fitColumns:true,
+				url:'datagrid_data.json',
+				columns:[[
+					{field:'itemid',title:'Item ID',width:80},
+					{field:'productid',title:'Product ID',width:100,sortable:true},
+					{field:'listprice',title:'List Price',width:80,align:'right',sortable:true},
+					{field:'unitcost',title:'Unit Cost',width:80,align:'right',sortable:true},
+					{field:'attr1',title:'Attribute',width:150,sortable:true},
+					{field:'status',title:'Status',width:60,align:'center'}
+				]],
+				view: detailview,
+				detailFormatter:function(rowIndex, rowData){
+					return '<table><tr>'+
+							'<td rowspan=2 style="border:0"><img src="images/'+rowData.itemid+'.png" style="height:50px;"></td>'+
+							'<td style="border:0">' +
+							'<p>Attribute: ' + rowData.attr1 + '</p>' +
+							'<p>Status: ' + rowData.status + '</p>' +
+							'</td>' +
+							'</tr></table>';
+				}
+    		});
+    		
+    		$('#st').datagrid({
+    			title:'含有子表格的数据列',
+				width:700,
+				height:300
+    		}).datagrid('subgrid', conf);
+    	})
+    </script>
+
+  </head>
+  
+  <body>
+  	<h1>数据列详细信息</h1>
+	<table id="tt"></table>
+	<table id="st"></table>
+  </body>
+</html>

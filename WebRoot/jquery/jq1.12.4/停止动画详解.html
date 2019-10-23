@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style>
+    div {
+      width: 400px;
+      height: 400px;
+      background-color: pink;
+      display: none;
+      position: absolute;
+    }
+  </style>
+</head>
+<body>
+<input type="button" value="开始">
+<input type="button" value="结束">
+<div></div>
+
+ <script type="text/javascript" src="../common/js/jquery-1.12.4.js"></script>
+<script>
+  $(function () {
+    $("input").eq(0).click(function () {
+      $("div").slideDown(4000).slideUp(4000);
+    });
+    
+    
+    $("input").eq(1).click(function () {
+      //stop:停止当前正在执行的动画，默认的两个参数值为false, false ,执行的时候目标元素身上可能还有多个动画未执行
+      //clearQueue:是否清除动画之前的队列 ,目标元素身上当前的所有未执行的动画队列作废
+      //jumpToEnd:是否跳转到当前动画的最终效果,目标元素身上当前的正在执行的动画是否执行完
+      
+      //stop方法结束后可以继续为目标元素添加动画队列
+      //.stop().animate(); 传true true 为什么不自信show
+      $("div").stop(false,true).show(3000).animate({width:100,height:100,left:800});
+    })
+  });
+</script>
+</body>
+</html>
