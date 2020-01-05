@@ -40,6 +40,7 @@
 	  	
 	  	//自行车装饰器
   		var BicycleDecorator=function(bicycle){
+  		  //确保bicycle对象里面含有Bicycle接口对象的所有方法
   			Interface.ensureImplements(bicycle,Bicycle);
   			this.bicycle=bicycle;//把需要装饰的原始对象桥接到装饰器对象上来
   			this.interface=Bicycle;//把判断接口类对象桥接到装饰器对象上来
@@ -51,10 +52,10 @@
   					 continue outerloop;
   				var that=this;
   				//为装饰期构造函数添加一个和原始对象的构造函数一样名称的方法
-  				(function(methodName){
+  				(function(methodName){ //每一次调用都会为装饰器对象生成新的方法
   					that[methodName]=function(){
   						//执行装饰器对象的方法即是执行和原始对象同名的方法,达到装饰的目的
-  						//执行的是装饰器构造函数定义的prototype里面的方法
+  						//调用新的方法的时候 实际去是调用装饰器对象的prototype上的方法
   						return that.bicycle[methodName]();
   					}
   				})(key);
